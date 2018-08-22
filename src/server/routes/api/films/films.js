@@ -1,0 +1,97 @@
+const {DEFAULT_QUERY_LIMIT} = require('../../constants/constants'); 
+const {DEFAULT_QUERY_OFFSET} = require('../../constants/constants');
+const express = require('express');
+const router = express.Router();
+const mongoose = require('mongoose');
+
+const Films = require('../../../models/films');
+
+const dataValidation = require('../../../middlewares/validation');
+const postFilmsSchema = require('../../../validationSchemas/postFilmsSchema');
+const putFilmsSchema = require('../../../validationSchemas/putFilmsSchema');
+
+router
+  .get('/', (req, res, next) => {
+    Films.paginate({ 
+      category: req.query.category || { $ne: "" },
+     }, { 
+      offset: Number(req.query.offset) || DEFAULT_QUERY_OFFSET, 
+      limit: Number(req.query.limit) || DEFAULT_QUERY_LIMIT 
+    })
+      .then(result => {
+        res.status(200).json(result);
+      })
+      .catch(err => {
+        res.status(500).json({error: err});
+      })
+  })
+
+  .get('/:id', (req, res, next) => {
+    const id = req.params.id;
+    Films.findById(id)
+      .exec()
+      .then(result => {
+        if (result) {
+          res.status(200).json(result);
+        } else {
+          res.status(404).json({message: "Not found!"})
+        }
+      })
+      .catch(err => {
+        res.status(500).json({error: err});
+      })
+  })
+
+  .post('/', dataValidation(postFilmsSchema),
+  (req, res, next) => {
+    const films = new Films({
+      _id: new mongoose.Types.ObjectId(),
+      title: req.body.title,
+      description: req.body.description,
+      avatar: req.body.avatar,
+      gallery: req.body.gallery,
+      rating: req.body.rating,
+      category: req.body.category,
+    });
+    films.save()
+      .then(result => {
+        res.status(200).json(result);
+      })
+      .catch(err => {
+        res.status(500).json({error: err});
+      })
+  })
+
+  .put('/:id', dataValidation(putFilmsSchema),
+  (req, res, next) => {
+    Films.findByIdAndUpdate(req.params.id, req.body, { new: true })
+      .exec()
+      .then(result => {
+        if (!result) {
+          res.status(400).json(result);
+        } else {
+          res.status(200).json(result);
+        }
+      })
+      .catch(err => {
+        res.status(500).json({ error: err});
+      });
+  })
+  
+  .delete('/:id', (req, res, next) => {
+    const id = req.params.id;
+    Films.remove({ _id: id })
+      .exec()
+      .then(result => {
+        res.status(200).json({
+          result: result,
+          "success":"true", 
+          "id":id
+        });
+      })
+      .catch(err => {
+        res.status(500).json({ message: "Film is not deleted!" })
+      })
+  });
+
+module.exports = router;
