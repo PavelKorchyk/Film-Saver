@@ -6,6 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import validate from '../../validate';
+import history from '../../history';
 
 const styles = theme => ({
   root: {
@@ -29,10 +30,15 @@ const styles = theme => ({
   textField: {
     "flex": "1 0 50px",
     "align-self": "center",
+    "margin-bottom": "0",
   },
   button: {
     margin: theme.spacing.unit,
   },
+  error: {
+    "color": "red",
+    "margin": "0 auto", 
+  }
 });
 
 class Login extends Component {
@@ -43,7 +49,8 @@ class Login extends Component {
       userName: '',
       password: '',
       passwordConfirmation: '',
-      errors: 'no info',
+      errors: '',
+      numOfSignUpAttempts: 0,
     };
   }
 
@@ -61,8 +68,27 @@ class Login extends Component {
 
   handleSubmit = () => {
     console.log(this.state.errors)
+    this.setState({ numOfSignUpAttempts: this.state.numOfSignUpAttempts + 1 })
     if(Object.keys(this.state.errors).length === 0) {
       console.log('let it be')
+      const url = 'api/user/signup';
+      const data = {
+        email: this.state.email,
+        username: this.state.userName,
+        password: this.state.password,
+      };
+      fetch(url, {
+        method: 'POST', // or 'PUT'
+        body: JSON.stringify(data), // data can be `string` or {object}!
+        headers:{
+          'Content-Type': 'application/json'
+        }
+      }).then(res => res.json())
+      .then(response => {
+        console.log('Success:', JSON.stringify(response));
+        history.replace('/login')
+      })
+      .catch(error => console.error('Error:', error));
     } else {
       console.log('Not so fast')
     }
@@ -74,7 +100,7 @@ class Login extends Component {
     return (
       <form className={classes.root}>
         <Paper className={classes.paper} elevation={3}>
-          <header className={classes.header}>Registration</header>
+          <header className={classes.header}>SignUp</header>
           <TextField
             id="email"
             label="Email"
@@ -84,6 +110,7 @@ class Login extends Component {
             onChange={this.onFieldChange}
             value={this.state.email}
           />
+          <div className={classes.error}>{this.state.numOfSignUpAttempts > 0 ? this.state.errors.email : null}</div>
           <TextField
             id="userName"
             label="User Name"
@@ -93,6 +120,7 @@ class Login extends Component {
             onChange={this.onFieldChange}
             value={this.state.userName}
           />
+          <div className={classes.error}>{this.state.numOfSignUpAttempts > 0 ? this.state.errors.userName : null}</div>
           <TextField
             id="password"
             label="Password"
@@ -102,6 +130,7 @@ class Login extends Component {
             onChange={this.onFieldChange}
             value={this.state.password}
           />
+          <div className={classes.error}>{this.state.numOfSignUpAttempts > 0 ? this.state.errors.password : null}</div>
           <TextField
             id="passwordConfirmation"
             label="Confirm password"
@@ -111,8 +140,9 @@ class Login extends Component {
             onChange={this.onFieldChange}
             value={this.state.passwordConfirmation}
           />
+          <div className={classes.error}>{this.state.numOfSignUpAttempts > 0 ? this.state.errors.passwordConfirmation : null}</div>
           <Button onClick={this.handleSubmit} variant="outlined" color="primary" className={classes.button}>
-            Register
+            SignUp
           </Button>
           <Button variant="outlined" className={classes.button} component={Link} to='/login'>
             Login

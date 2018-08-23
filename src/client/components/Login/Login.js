@@ -62,8 +62,8 @@ class Login extends Component {
           <Button variant="outlined" color="primary" className={classes.button}>
             Login
           </Button>
-          <Button variant="outlined" className={classes.button} component={Link} to='/registration'>
-            Register
+          <Button variant="outlined" className={classes.button} component={Link} to='/signup'>
+            SignUp
           </Button>
         </Paper>
       </div>
