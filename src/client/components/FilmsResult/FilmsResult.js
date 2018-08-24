@@ -35,7 +35,6 @@ function FilmsResult (props) {
   const { films, classes } = props;
   
   if(films) {
-    console.log(films);
     filmListContent = (
       <div className={classes.root}>
         <GridList cols={3} className={classes.gridList}>

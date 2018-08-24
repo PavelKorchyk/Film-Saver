@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
-const passport = require('passport');
-const Strategy = require('passport-local').Strategy;
 const validator = require('validator');
 
 //Bring in User Model
@@ -28,17 +26,9 @@ router.post('/signup', (req, res, next) => {
       .catch(err => {
         res.status(500).json({error: err});
       })
-    console.log('ok');
   } else {
-    console.log('not ok');
+
   }
 })
-
-router.get('/login', (req, res, next) => {
-  res.send();
-});
-
-
-
 
 module.exports = router; 

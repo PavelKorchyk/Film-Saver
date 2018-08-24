@@ -57,7 +57,6 @@ class Search extends Component {
     } else {
       filmsLength = this.state.films.Search.length;
     }
-    console.log()
     return (
       <div>
         <div className={classes.centered}>

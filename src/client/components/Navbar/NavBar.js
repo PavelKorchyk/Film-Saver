@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
@@ -17,21 +17,40 @@ const styles = {
   },
 };
 
-function NavBar (props) {
-  const { classes } = props;
-  return (
-    <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="title" color="inherit" className={classes.flex} component={Link} to='/'>
-            Films Saver
-          </Typography>
-          <Button color="inherit" component={Link} to='/login'>Login</Button>
-        </Toolbar>
-      </AppBar>
-    </div>
-  );
+function logOut () {
+  localStorage.removeItem('token');
 }
+
+class NavBar extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isLogedId: '',
+    }
+  }
+
+  logOut = () => {
+    localStorage.removeItem('token');
+    this.setState({ isLogedId: 'no' })
+  }
+
+  render() {
+    const { classes } = this.props;
+    return (
+      <div className={classes.root}>
+        <AppBar position="static">
+          <Toolbar>
+            <Typography variant="title" color="inherit" className={classes.flex} component={Link} to='/'>
+              Films Saver
+            </Typography>
+            { localStorage.getItem('token') ? (<Button color="inherit" onClick={this.logOut}>Logout</Button>) : (<Button color="inherit" component={Link} to='/login'>Login</Button>) }
+          </Toolbar>
+        </AppBar>
+      </div>
+    );
+  }
+}
+  
 
 NavBar.propTypes = {
   classes: PropTypes.object.isRequired,

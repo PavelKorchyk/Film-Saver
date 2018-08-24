@@ -5,6 +5,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
+const passport = require('./passport');
 require('dotenv').config({ path: 'src/server/variables.env' });
 
 const apiRouter = require('./routes/api/index');
@@ -25,9 +26,10 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'client')));
+app.use(passport.initialize());
 
 app.use('/', indexRouter);
-app.use('/api/', apiRouter);
+app.use('/api', apiRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

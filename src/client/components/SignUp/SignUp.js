@@ -49,7 +49,7 @@ class Login extends Component {
       userName: '',
       password: '',
       passwordConfirmation: '',
-      errors: '',
+      errors: 'no errors',
       numOfSignUpAttempts: 0,
     };
   }
@@ -67,10 +67,8 @@ class Login extends Component {
   }
 
   handleSubmit = () => {
-    console.log(this.state.errors)
     this.setState({ numOfSignUpAttempts: this.state.numOfSignUpAttempts + 1 })
     if(Object.keys(this.state.errors).length === 0) {
-      console.log('let it be')
       const url = 'api/user/signup';
       const data = {
         email: this.state.email,
@@ -85,17 +83,15 @@ class Login extends Component {
         }
       }).then(res => res.json())
       .then(response => {
-        console.log('Success:', JSON.stringify(response));
         history.replace('/login')
       })
       .catch(error => console.error('Error:', error));
     } else {
-      console.log('Not so fast')
+  
     }
   }
 
   render() {
-    console.log(this.state.errors);
     const { classes } = this.props;
     return (
       <form className={classes.root}>
