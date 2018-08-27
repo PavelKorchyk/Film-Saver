@@ -8,10 +8,22 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import makeRequest from '../../makeRequest';
 import history from '../../history';
+import { logIn } from '../../redux/actions/index'; 
+import { connect } from "react-redux";
 
-if (localStorage.getItem('token')) {
-  history.replace('/');
-}
+const mapDispatchToProps = dispatch => {
+  return {
+    logIn: user => dispatch(logIn(user)),
+  };
+};
+
+const mapStateToProps = (store) => {
+  if (store.user.token) {
+    history.replace('/');
+  }
+  return {token: store.user.token};
+};
+
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -27,6 +39,7 @@ class Login extends Component {
   }
 
   onSubmit = () => {
+    event.preventDefault();
     const url = '/api/auth/login';
     const method = 'POST';
     const data = {
@@ -36,20 +49,20 @@ class Login extends Component {
     makeRequest (url, method, data)
     .then(response => {
       if(response.token != undefined) {
-        localStorage.setItem('token', response.token);
-        console.log('Token:', localStorage.getItem('token'));
+        this.props.logIn(response);
         history.replace('/');
-      } else {
-        this.setState({ signInButtonColor: "secondary" });
       }
     })
-    .catch(error => console.error('Error:', error));
+    .catch(error => {
+      console.error('Error:', error);
+      this.setState({ signInButtonColor: "secondary" });
+    });
   }
 
   render() {
     const { classes } = this.props;
     return (
-      <div className={classes.root}>
+      <form className={classes.root}>
         <Paper className={classes.paper} elevation={3}>
           <header className={classes.header}>Log in</header>
           <TextField
@@ -73,14 +86,14 @@ class Login extends Component {
             value={this.state.password}
             onChange={this.onChange}
           />
-          <Button onClick={this.onSubmit} type="submit" variant="outlined" color={this.state.signInButtonColor} className={classes.button}>
+          <Button onClick={this.onSubmit} variant="outlined" color={this.state.signInButtonColor} className={classes.button}>
             Login
           </Button>
           <Button variant="outlined" className={classes.button} component={Link} to='/signup'>
             SignUp
           </Button>
         </Paper>
-      </div>
+      </form>
     )
   }
 } 
@@ -89,4 +102,4 @@ Login.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Login);
+export default connect (mapStateToProps, mapDispatchToProps) (withStyles(styles)(Login));

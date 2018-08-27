@@ -12,8 +12,7 @@ const makeRequest = (url, method, data) => {
   })
     .then(response => {
       if (response.status === 401) {
-        localStorage.removeItem('token');
-        history.push('/login');
+        history.default.replace('/login');
       } else if (response.status === 400) {
         console.warn('Bad request');
         return null;

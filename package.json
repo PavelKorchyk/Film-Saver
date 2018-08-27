@@ -42,12 +42,14 @@
     "redux": "^4.0.0",
     "redux-devtools": "^3.4.1",
     "redux-form": "^7.4.2",
+    "redux-persist": "^5.10.0",
     "validator": "^10.6.0"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
     "babel-plugin-transform-class-properties": "^6.24.1",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-react": "^6.24.1",
     "bcryptjs": "^2.4.3",
@@ -62,6 +64,7 @@
     "file-loader": "^1.1.11",
     "html-webpack-plugin": "^3.2.0",
     "nodemon": "^1.17.3",
+    "redux-devtools-extension": "^2.13.5",
     "style-loader": "^0.22.0",
     "url-loader": "^1.0.1",
     "webpack": "^4.5.0",

@@ -7,18 +7,22 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import { logOut } from '../../redux/actions/index';
+import { connect } from "react-redux";
+
+const mapDispatchToProps = dispatch => {
+  return {
+    logOut: () => dispatch(logOut()),
+  };
+};
+
+const mapStateToProps = store => {
+  return {token: store.user.token};
+};
 
 class NavBar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLogedId: '',
-    }
-  }
-
   logOut = () => {
-    localStorage.removeItem('token');
-    this.setState({ isLogedId: 'no' })
+    this.props.logOut();
   }
 
   render() {
@@ -30,7 +34,7 @@ class NavBar extends Component {
             <Typography variant="title" color="inherit" className={classes.flex} component={Link} to='/'>
               Films Saver
             </Typography>
-            { localStorage.getItem('token') ? (<Button color="inherit" onClick={this.logOut}>Logout</Button>) : (<Button color="inherit" component={Link} to='/login'>Login</Button>) }
+            { this.props.token ? (<Button color="inherit" onClick={this.logOut}>Logout</Button>) : (<Button color="inherit" component={Link} to='/login'>Login</Button>) }
           </Toolbar>
         </AppBar>
       </div>
@@ -38,9 +42,8 @@ class NavBar extends Component {
   }
 }
   
-
 NavBar.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(NavBar);
+export default connect (mapStateToProps, mapDispatchToProps) (withStyles(styles)(NavBar));

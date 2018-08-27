@@ -4,10 +4,6 @@ import styles from './styles';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 import FilmsResult from '../FilmsResult/FilmsResult';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import InputLabel from '@material-ui/core/InputLabel';
 
 class Search extends Component {
   constructor(props) {

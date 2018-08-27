@@ -9,10 +9,11 @@ import Button from '@material-ui/core/Button';
 import validate from '../../validate';
 import makeRequest from '../../makeRequest';
 import history from '../../history';
+import { connect } from "react-redux";
 
-if (localStorage.getItem('token')) {
-  history.replace('/');
-}
+const mapStateToProps = store => {
+  return {token: store.user.token};
+};
 
 class Login extends Component {
   constructor(props) {
@@ -25,6 +26,12 @@ class Login extends Component {
       errors: 'no errors',
       numOfSignUpAttempts: 0,
     };
+  }
+
+  componentDidMount() {
+    if (this.props.token) {
+      history.replace('/');
+    }
   }
 
   onFieldChange = (e) => {
@@ -114,10 +121,9 @@ class Login extends Component {
     )
   }
 }
-  
 
 Login.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(Login);
+export default connect (mapStateToProps, null) (withStyles(styles)(Login));

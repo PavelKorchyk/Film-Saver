@@ -1,7 +1,4 @@
 const styles = theme => ({
-  root: {
-    
-  },
   paper: {
     "margin": "30px auto",
     "max-width": "300px",
