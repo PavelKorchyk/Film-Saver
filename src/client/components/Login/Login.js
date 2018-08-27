@@ -2,39 +2,16 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
+import styles from './styles';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
+import makeRequest from '../../makeRequest';
 import history from '../../history';
 
-const styles = theme => ({
-  root: {
-    
-  },
-  paper: {
-    "margin": "30px auto",
-    "max-width": "300px",
-    paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2,
-    "display": "flex",
-    "flex-direction": "column",
-    "justify-content": "center",
-    "flex-wrap": "wrap",
-  },
-  header: {
-    "flex": "1 0 50px",
-    "align-self": "center",
-    "font-size": "30px",
-  },
-  textField: {
-    "flex": "1 0 50px",
-    "align-self": "center",
-  },
-  button: {
-    margin: theme.spacing.unit,
-  },
-});
-
+if (localStorage.getItem('token')) {
+  history.replace('/');
+}
 class Login extends Component {
   constructor(props) {
     super(props);
@@ -51,23 +28,17 @@ class Login extends Component {
 
   onSubmit = () => {
     const url = '/api/auth/login';
+    const method = 'POST';
     const data = {
       email: this.state.email,
       password: this.state.password,
     };
-    fetch(url, {
-      method: 'POST',
-      body: JSON.stringify(data),
-      headers:{
-        'Content-Type': 'application/json'
-      }
-    })
-    .then(res => res.json())
+    makeRequest (url, method, data)
     .then(response => {
       if(response.token != undefined) {
         localStorage.setItem('token', response.token);
         console.log('Token:', localStorage.getItem('token'));
-        history.replace('/')
+        history.replace('/');
       } else {
         this.setState({ signInButtonColor: "secondary" });
       }

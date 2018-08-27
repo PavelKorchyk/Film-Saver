@@ -1,33 +1,13 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
+import styles from './styles';
 import TextField from '@material-ui/core/TextField';
 import axios from 'axios';
 import FilmsResult from '../FilmsResult/FilmsResult';
-
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
-
-const styles = theme => ({
-  centered: {
-    "display": "flex",
-    "flex-direction": "column",
-    "justify-content": "center",
-    "flex-wrap": "wrap",
-  },
-  formControl: {
-    "flex": "1 0 50px",
-    "align-self": "center",
-    minWidth: 120,
-    maxWidth: 300,
-  },
-  textField: {
-    "flex": "1 0 50px",
-    "align-self": "center",
-    "max-width": "500px",
-  }
-});
 
 class Search extends Component {
   constructor(props) {
@@ -80,19 +60,3 @@ class Search extends Component {
 }
 
 export default withStyles(styles) (Search);
-
-/* <FormControl className={classes.formControl}>
-          <InputLabel htmlFor="films-type">Films Type</InputLabel>
-          <Select
-              value={this.state.type}
-              onChange={this.onTypeChange}
-              inputProps={{
-                name: 'type',
-                id: 'films-type',
-              }}
-            >
-            <MenuItem value={'movie'}>Movie</MenuItem>
-            <MenuItem value={'series'}>Series</MenuItem>
-            <MenuItem value={'episode'}>Episode</MenuItem>
-          </Select>
-        </FormControl> */

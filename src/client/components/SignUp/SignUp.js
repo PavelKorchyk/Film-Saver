@@ -2,44 +2,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
+import styles from './styles';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import validate from '../../validate';
+import makeRequest from '../../makeRequest';
 import history from '../../history';
 
-const styles = theme => ({
-  root: {
-    
-  },
-  paper: {
-    "margin": "30px auto",
-    "max-width": "300px",
-    paddingTop: theme.spacing.unit * 2,
-    paddingBottom: theme.spacing.unit * 2,
-    "display": "flex",
-    "flex-direction": "column",
-    "justify-content": "center",
-    "flex-wrap": "wrap",
-  },
-  header: {
-    "flex": "1 0 50px",
-    "align-self": "center",
-    "font-size": "30px",
-  },
-  textField: {
-    "flex": "1 0 50px",
-    "align-self": "center",
-    "margin-bottom": "0",
-  },
-  button: {
-    margin: theme.spacing.unit,
-  },
-  error: {
-    "color": "red",
-    "margin": "0 auto", 
-  }
-});
+if (localStorage.getItem('token')) {
+  history.replace('/');
+}
 
 class Login extends Component {
   constructor(props) {
@@ -62,32 +35,25 @@ class Login extends Component {
         userName: this.state.userName,
         passwordConfirmation: this.state.passwordConfirmation,
       }
-      this.setState({ errors: validate(errors) })
+      this.setState({ errors: validate(errors) });
     });
   }
 
   handleSubmit = () => {
     this.setState({ numOfSignUpAttempts: this.state.numOfSignUpAttempts + 1 })
-    if(Object.keys(this.state.errors).length === 0) {
+    if (Object.keys(this.state.errors).length === 0) {
       const url = 'api/user/signup';
+      const method = 'POST';
       const data = {
         email: this.state.email,
         username: this.state.userName,
         password: this.state.password,
       };
-      fetch(url, {
-        method: 'POST', // or 'PUT'
-        body: JSON.stringify(data), // data can be `string` or {object}!
-        headers:{
-          'Content-Type': 'application/json'
-        }
-      }).then(res => res.json())
+      makeRequest(url, method, data)
       .then(response => {
         history.replace('/login')
       })
       .catch(error => console.error('Error:', error));
-    } else {
-  
     }
   }
 
