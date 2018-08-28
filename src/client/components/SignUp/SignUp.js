@@ -20,11 +20,13 @@ class Login extends Component {
     super(props);
     this.state = {
       email: '', 
-      userName: '',
+      username: '',
       password: '',
       passwordConfirmation: '',
-      errors: 'no errors',
+      errors: '',
       numOfSignUpAttempts: 0,
+      signUpButtonColor: "primary",
+      response: {},
     };
   }
 
@@ -39,10 +41,10 @@ class Login extends Component {
       let errors = {
         password: this.state.password,
         email: this.state.email,
-        userName: this.state.userName,
+        username: this.state.username,
         passwordConfirmation: this.state.passwordConfirmation,
       }
-      this.setState({ errors: validate(errors) });
+      this.setState({ errors: validate(errors), response: {} });
     });
   }
 
@@ -53,12 +55,16 @@ class Login extends Component {
       const method = 'POST';
       const data = {
         email: this.state.email,
-        username: this.state.userName,
+        username: this.state.username,
         password: this.state.password,
       };
       makeRequest(url, method, data)
       .then(response => {
-        history.replace('/login')
+        if (response.message || !response) {
+          this.setState({ signUpButtonColor: "secondary", response });
+        } else {
+          history.replace('/login')
+        }
       })
       .catch(error => console.error('Error:', error));
     }
@@ -69,7 +75,7 @@ class Login extends Component {
     return (
       <form className={classes.root}>
         <Paper className={classes.paper} elevation={3}>
-          <header className={classes.header}>SignUp</header>
+          <header className={classes.header}>Create Account</header>
           <TextField
             id="email"
             label="Email"
@@ -79,17 +85,27 @@ class Login extends Component {
             onChange={this.onFieldChange}
             value={this.state.email}
           />
-          <div className={classes.error}>{this.state.numOfSignUpAttempts > 0 ? this.state.errors.email : null}</div>
+          <div className={classes.error}> 
+            {
+              this.state.response.email ? this.state.response.email :
+              (this.state.numOfSignUpAttempts > 0 ? this.state.errors.email : null)
+            }
+          </div>
           <TextField
-            id="userName"
+            id="username"
             label="User Name"
             placeholder="user_1"
             className={classes.textField}
             margin="normal"
             onChange={this.onFieldChange}
-            value={this.state.userName}
+            value={this.state.username}
           />
-          <div className={classes.error}>{this.state.numOfSignUpAttempts > 0 ? this.state.errors.userName : null}</div>
+          <div className={classes.error}>
+          {
+              this.state.response.username ? this.state.response.username :
+              (this.state.numOfSignUpAttempts > 0 ? this.state.errors.username : null)
+            }
+          </div>
           <TextField
             id="password"
             label="Password"
@@ -110,7 +126,7 @@ class Login extends Component {
             value={this.state.passwordConfirmation}
           />
           <div className={classes.error}>{this.state.numOfSignUpAttempts > 0 ? this.state.errors.passwordConfirmation : null}</div>
-          <Button onClick={this.handleSubmit} variant="outlined" color="primary" className={classes.button}>
+          <Button onClick={this.handleSubmit} variant="outlined" color={this.state.signUpButtonColor} className={classes.button}>
             SignUp
           </Button>
           <Button variant="outlined" className={classes.button} component={Link} to='/login'>

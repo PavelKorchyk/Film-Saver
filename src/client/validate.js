@@ -10,10 +10,10 @@ const validate = values => {
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
         errors.email = 'Invalid email address';
     }
-    if (!values.userName) {
-      errors.userName = 'Required';
-    } else if (values.userName.length > 15) {
-      errors.userName = 'Too long';
+    if (!values.username) {
+      errors.username = 'Required';
+    } else if (values.username.length > 15) {
+      errors.username = 'Too long';
     }
     if (!values.passwordConfirmation) {
       errors.passwordConfirmation = 'Required';

@@ -31,11 +31,13 @@ class Login extends Component {
       email: '',
       password: '',
       signInButtonColor: "primary",
+      emailError: '',
+      passwordError: '',
     }
   }
 
   onChange = (e) => {
-    this.setState({ [e.target.name]: e.target.value });
+    this.setState({ [e.target.name]: e.target.value, error: {} });
   }
 
   onSubmit = () => {
@@ -48,7 +50,14 @@ class Login extends Component {
     };
     makeRequest (url, method, data)
     .then(response => {
-      if(response.token != undefined) {
+      if (response.emailError || response.passwordError) {
+        this.setState({ emailError: response.emailError, passwordError: response.passwordError });
+      } else {
+        return response;
+      }
+    })
+    .then(response => {
+      if(response.token) {
         this.props.logIn(response);
         history.replace('/');
       }
@@ -75,6 +84,11 @@ class Login extends Component {
             value={this.state.email}
             onChange={this.onChange}
           />
+          <div className={classes.error}> 
+            {
+              this.state.emailError ? this.state.emailError : null
+            }
+          </div>
           <TextField
             id="password-input"
             name="password"
@@ -86,6 +100,11 @@ class Login extends Component {
             value={this.state.password}
             onChange={this.onChange}
           />
+          <div className={classes.error}> 
+            {
+              this.state.passwordError ? this.state.passwordError : null
+            }
+          </div>
           <Button onClick={this.onSubmit} variant="outlined" color={this.state.signInButtonColor} className={classes.button}>
             Login
           </Button>
