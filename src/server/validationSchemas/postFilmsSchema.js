@@ -7,7 +7,7 @@ const schema = {
   avatar: Joi.string().uri().required(),
   gallery: Joi.array().items(Joi.string().uri()).min(4).required(),
   rating: Joi.number().min(0).max(5),
-  category: Joi.string(),
+  categories: Joi.string(),
 };
 
 module.exports = schema;

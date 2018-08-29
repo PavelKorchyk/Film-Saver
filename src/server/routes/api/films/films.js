@@ -1,5 +1,5 @@
-const {DEFAULT_QUERY_LIMIT} = require('../../constants/constants'); 
-const {DEFAULT_QUERY_OFFSET} = require('../../constants/constants');
+const {DEFAULT_QUERY_FILMS_LIMIT} = require('../../constants/constants'); 
+const {DEFAULT_QUERY_FILMS_OFFSET} = require('../../constants/constants');
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
@@ -12,12 +12,12 @@ const putFilmsSchema = require('../../../validationSchemas/putFilmsSchema');
 
 router
   .get('/', (req, res, next) => {
-    Films.paginate({ 
-      category: req.query.category || { $ne: "" },
-     }, { 
-      offset: Number(req.query.offset) || DEFAULT_QUERY_OFFSET, 
-      limit: Number(req.query.limit) || DEFAULT_QUERY_LIMIT 
-    })
+    Films
+      .find({}, null, {      
+        skip: Number(req.query.offset) || DEFAULT_QUERY_FILMS_OFFSET, 
+        limit: Number(req.query.limit) || DEFAULT_QUERY_FILMS_LIMIT,
+      })
+      .populate('categories')
       .then(result => {
         res.status(200).json(result);
       })

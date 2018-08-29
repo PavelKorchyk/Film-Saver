@@ -1,8 +1,8 @@
 const history = require('./history');
 
-const makeRequest = (url, method, data) => {
+const makeRequest = (url, method, token, data ) => {
   let headers = new Headers();
-  headers.set("Authorization", `JWT ${localStorage.getItem('token')}`);
+  headers.set("Authorization", `JWT ${token}`);
   headers.set("Content-Type", "application/json");
 
   return fetch(url, {

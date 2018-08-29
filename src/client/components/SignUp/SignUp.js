@@ -58,7 +58,7 @@ class Login extends Component {
         username: this.state.username,
         password: this.state.password,
       };
-      makeRequest(url, method, data)
+      makeRequest(url, method, null, data)
       .then(response => {
         if (response.message || !response) {
           this.setState({ signUpButtonColor: "secondary", response });

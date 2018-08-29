@@ -13,6 +13,7 @@ const apiRouter = require('./routes/api/index');
 const app = express();
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'});
 
+mongoose.set('debug', true);
 mongoose.connect(`mongodb://${process.env.MONGO_USER_NAME}:${process.env.MONGO_PW}${process.env.MONGO_DB_INFO}`, { useNewUrlParser: true });
 
 // view engine setup

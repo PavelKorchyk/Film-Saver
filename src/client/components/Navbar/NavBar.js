@@ -34,6 +34,8 @@ class NavBar extends Component {
             <Typography variant="title" color="inherit" className={classes.flex} component={Link} to='/'>
               Films Saver
             </Typography>
+            <Button color="inherit" component={Link} to='/films'>Films</Button>
+            <Button color="inherit" component={Link} to='/genres'>Genres</Button>
             { this.props.token ? (<Button color="inherit" onClick={this.logOut}>Logout</Button>) : (<Button color="inherit" component={Link} to='/login'>Login</Button>) }
           </Toolbar>
         </AppBar>

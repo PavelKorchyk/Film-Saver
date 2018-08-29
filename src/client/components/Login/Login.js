@@ -48,7 +48,7 @@ class Login extends Component {
       email: this.state.email,
       password: this.state.password,
     };
-    makeRequest (url, method, data)
+    makeRequest (url, method, null, data)
     .then(response => {
       if (response.emailError || response.passwordError) {
         this.setState({ emailError: response.emailError, passwordError: response.passwordError });

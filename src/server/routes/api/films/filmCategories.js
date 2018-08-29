@@ -1,10 +1,10 @@
-const {DEFAULT_QUERY_LIMIT} = require('../../constants/constants'); 
-const {DEFAULT_QUERY_OFFSET} = require('../../constants/constants');
+const {DEFAULT_QUERY_CATEGORIES_LIMIT} = require('../../constants/constants'); 
+const {DEFAULT_QUERY_CATEGORIES_OFFSET} = require('../../constants/constants');
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
 
-const FilmCategories = require('../../../models/filmCategories');
+const Categories = require('../../../models/filmCategories');
 
 const dataValidation = require('../../../middlewares/validation');
 const postCategoriesSchema = require('../../../validationSchemas/postCategoriesSchema');
@@ -12,10 +12,12 @@ const putCategoriesSchema = require('../../../validationSchemas/putCategoriesSch
 
 router
   .get('/', (req, res, next) => {
-    FilmCategories.paginate({}, { 
-      offset: Number(req.query.offset) || DEFAULT_QUERY_OFFSET, 
-      limit: Number(req.query.limit) || DEFAULT_QUERY_LIMIT 
-    })
+    Categories
+      .find({}, null, {      
+        skip: Number(req.query.offset) || DEFAULT_QUERY_CATEGORIES_OFFSET, 
+        limit: Number(req.query.limit) || DEFAULT_QUERY_CATEGORIES_LIMIT,
+      })
+      .populate('films')
       .then(result => {
         res.status(200).json(result);
       })
@@ -25,7 +27,9 @@ router
   })
   .get('/:id', (req, res, next) => {
     const id = req.params.id;
-    FilmCategories.findById(id)
+    Categories
+      .findById(id)
+      .populate('films')
       .exec()
       .then(result => {
         res.status(200).json(result);
@@ -36,13 +40,15 @@ router
   })
   .post('/', dataValidation(postCategoriesSchema), 
     (req, res, next) => {
-    const filmCategories = new FilmCategories({
+    const categories = new Categories({
       _id: new mongoose.Types.ObjectId(),
       title: req.body.title,
       description: req.body.description,
       films: req.body.films,
     });
-    filmCategories.save()
+    categories
+      .save()
+      .populate('films')
       .then(result => {
         res.status(200).json(result);
       })
@@ -53,7 +59,7 @@ router
 
   .put('/:id', dataValidation(putCategoriesSchema), 
     (req, res, next) => {
-    FilmCategories.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    Categories.findByIdAndUpdate(req.params.id, req.body, { new: true })
       .exec()
       .then(result => {
         if (!result) {
@@ -68,7 +74,7 @@ router
   })
   .delete('/:id', (req, res, next) => {
     const id = req.params.id;
-    FilmCategories.remove({ _id: id })
+    Categories.remove({ _id: id })
       .exec()
       .then(result => {
         res.status(200).json({
