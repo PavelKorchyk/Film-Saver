@@ -10,7 +10,7 @@ import validate from '../../validate';
 import makeRequest from '../../makeRequest';
 import history from '../../history';
 import { connect } from 'react-redux';
-import shouldRender from '../../shouldRender';
+import Errors from '../Errors/Errors';
 
 const mapStateToProps = store => {
   return {token: store.user.token};
@@ -49,27 +49,36 @@ class Login extends Component {
   }
 
   handleSubmit = () => {
-    this.setState({ numOfSignUpAttempts: this.state.numOfSignUpAttempts + 1 });
-    if (this.state.numOfSignUpAttempts > 0 && this.state.errors) {
+    if (
+      !this.state.email &&
+      !this.state.username &&
+      !this.state.password &&
+      !this.state.passwordConfirmation
+    ) {
       this.setState({ signUpButtonColor: "secondary" });
-    }
-    if (Object.keys(this.state.errors).length === 0) {
-      const url = 'api/user/signup';
-      const method = 'POST';
-      const data = {
-        email: this.state.email,
-        username: this.state.username,
-        password: this.state.password,
-      };
-      makeRequest(url, method, null, data)
-      .then(response => {
-        if (response.message || !response) {
-          this.setState({ signUpButtonColor: "secondary" });
-        } else {
-          history.replace('/login')
-        }
-      })
-      .catch(error => console.error('Error:', error));
+    } else {
+      this.setState({ numOfSignUpAttempts: this.state.numOfSignUpAttempts + 1 });
+      if (this.state.numOfSignUpAttempts > 0 && this.state.errors) {
+        this.setState({ signUpButtonColor: "secondary" });
+      }
+      if (Object.keys(this.state.errors).length === 0) {
+        const url = 'api/user/signup';
+        const method = 'POST';
+        const data = {
+          email: this.state.email,
+          username: this.state.username,
+          password: this.state.password,
+        };
+        makeRequest(url, method, null, data)
+        .then(response => {
+          if (response.message || !response) {
+            this.setState({ signUpButtonColor: "secondary" });
+          } else {
+            history.replace('/login')
+          }
+        })
+        .catch(error => console.error('Error:', error));
+      }
     }
   }
 
@@ -88,11 +97,7 @@ class Login extends Component {
             onChange={this.onFieldChange}
             value={this.state.email}
           />
-          <div className={classes.error}> 
-            {
-              shouldRender(this.state.numOfSignUpAttempts > 0, this.state.errors.email)
-            }
-          </div>
+          <Errors error={this.state.errors.email} condition={this.state.numOfSignUpAttempts > 0} />
           <TextField
             id="username"
             label="User Name"
@@ -102,11 +107,7 @@ class Login extends Component {
             onChange={this.onFieldChange}
             value={this.state.username}
           />
-          <div className={classes.error}>
-          {
-              shouldRender(this.state.numOfSignUpAttempts > 0, this.state.errors.username)
-          }
-          </div>
+          <Errors error={this.state.errors.username} condition={this.state.numOfSignUpAttempts > 0} />
           <TextField
             id="password"
             label="Password"
@@ -116,11 +117,7 @@ class Login extends Component {
             onChange={this.onFieldChange}
             value={this.state.password}
           />
-          <div className={classes.error}>
-            {
-              shouldRender(this.state.numOfSignUpAttempts > 0, this.state.errors.password)
-            }
-          </div>
+          <Errors error={this.state.errors.password} condition={this.state.numOfSignUpAttempts > 0} />
           <TextField
             id="passwordConfirmation"
             label="Confirm password"
@@ -130,11 +127,7 @@ class Login extends Component {
             onChange={this.onFieldChange}
             value={this.state.passwordConfirmation}
           />
-          <div className={classes.error}>
-          {
-            shouldRender(this.state.numOfSignUpAttempts > 0, this.state.errors.passwordConfirmation)
-          }
-          </div>
+          <Errors error={this.state.errors.passwordConfirmation} condition={this.state.numOfSignUpAttempts > 0} />
           <Button onClick={this.handleSubmit} variant="outlined" color={this.state.signUpButtonColor} className={classes.button}>
             SignUp
           </Button>

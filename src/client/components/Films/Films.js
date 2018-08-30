@@ -22,17 +22,13 @@ class Films extends Component {
   }
 
   componentDidMount() {
-    if (this.props.token) {
-      makeRequest('/api/films', 'GET', this.props.token).then(result => this.setState({ result} ))
-    }
+    makeRequest('/api/films', 'GET').then(result => this.setState({ result }))
   }
   
   filmRender() {
     const { classes } = this.props;
     const films = this.state.result;
-    let filmContent;
-    filmContent = (
-      <div className={classes.root}>
+    return <div className={classes.root}>
         <div className={classes.paper}>
           {films.map(film => (
             <Card onClick={() => { console.log('onClick'); }} key={film._id} className={classes.card}>
@@ -56,16 +52,17 @@ class Films extends Component {
             </Card>
           ))}
         </div>
-      </div>)
-    return filmContent;
+      </div>
   }
 
   render() {
+    const { classes } = this.props;
     if(!this.state.result) {
-      return <div></div>
-    } else {
-      return this.filmRender();
+      return <div className={classes.wrapper}>
+        <img src={"https://upload.wikimedia.org/wikipedia/commons/6/63/Elipsis.gif"} alt="" className={classes.elipsis} />
+      </div>
     }
+    return this.filmRender();
   }
 }
 

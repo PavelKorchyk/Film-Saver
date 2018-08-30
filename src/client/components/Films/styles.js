@@ -10,6 +10,14 @@ const styles = theme => ({
     "display": "flex",
     "flex-wrap": "wrap",
     "justify-content": "center"
+  },
+  wrapper: {
+    "margin": "100px",
+    "display": "flex",
+    "justify-content": "center",
+  },
+  elipsis: {
+    "align-self": "center",
   }
 });
 

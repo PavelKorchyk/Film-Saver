@@ -3,6 +3,7 @@ const {DEFAULT_QUERY_CATEGORIES_OFFSET} = require('../../constants/constants');
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const passport = require('../../../passport');
 
 const Categories = require('../../../models/filmCategories');
 
@@ -38,7 +39,7 @@ router
         res.status(500).json({ error: err });
       })
   })
-  .post('/', dataValidation(postCategoriesSchema), 
+  .post('/', passport.authenticate('jwt', { session: false }), dataValidation(postCategoriesSchema), 
     (req, res, next) => {
     const categories = new Categories({
       _id: new mongoose.Types.ObjectId(),
@@ -56,7 +57,7 @@ router
       })
   })
 
-  .put('/:id', dataValidation(putCategoriesSchema), 
+  .put('/:id', passport.authenticate('jwt', { session: false }), dataValidation(putCategoriesSchema), 
     (req, res, next) => {
     Categories.findByIdAndUpdate(req.params.id, req.body, { new: true })
       .exec()
@@ -71,7 +72,7 @@ router
         res.status(500).json({ error: err });
       })
   })
-  .delete('/:id', (req, res, next) => {
+  .delete('/:id', passport.authenticate('jwt', { session: false }), (req, res, next) => {
     const id = req.params.id;
     Categories.remove({ _id: id })
       .exec()
