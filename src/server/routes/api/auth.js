@@ -6,20 +6,21 @@ const config = require('../../config');
 const bcrypt = require('bcrypt');
 
 router.post('/login', (req, res, next) => {
-  if (req.body.email && req.body.password) {
+  if (req.body.email || req.body.password) {
     User.findOne({ email: req.body.email })
       .then(user => {
         if (!user) {
-          res.json({emailError: "Couldn't find your email"});
-        } else {
-          return user;
-        }
+          res.json({ Error: "Wrong email or password" });
+          throw new Error("Wrong data");
+        } 
+        return user;
       })
       .then(user => {
         if(bcrypt.compareSync(req.body.password, user.password)) {
           return user;
         } else {
-          res.json({passwordError: "Wrong password"});
+          res.json({ Error: "Wrong email or password" });
+          throw new Error('Wrong data');
         }
       })
       .then(user => {

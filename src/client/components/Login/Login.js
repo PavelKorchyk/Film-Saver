@@ -9,7 +9,8 @@ import Button from '@material-ui/core/Button';
 import makeRequest from '../../makeRequest';
 import history from '../../history';
 import { logIn } from '../../redux/actions/index'; 
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
+import shouldRender from '../../shouldRender';
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -31,8 +32,7 @@ class Login extends Component {
       email: '',
       password: '',
       signInButtonColor: "primary",
-      emailError: '',
-      passwordError: '',
+      Error: '',
     }
   }
 
@@ -50,8 +50,9 @@ class Login extends Component {
     };
     makeRequest (url, method, null, data)
     .then(response => {
-      if (response.emailError || response.passwordError) {
-        this.setState({ emailError: response.emailError, passwordError: response.passwordError });
+      if (response.Error) {
+        this.setState({ Error: response.Error });
+        throw new Error('Wrong email or password');
       } else {
         return response;
       }
@@ -74,6 +75,11 @@ class Login extends Component {
       <form className={classes.root}>
         <Paper className={classes.paper} elevation={3}>
           <header className={classes.header}>Log in</header>
+          <div className={classes.error}> 
+            {
+              shouldRender(this.state.Error, this.state.Error)
+            }
+          </div>
           <TextField
             id="email-input"
             name="email"
@@ -84,11 +90,7 @@ class Login extends Component {
             value={this.state.email}
             onChange={this.onChange}
           />
-          <div className={classes.error}> 
-            {
-              this.state.emailError ? this.state.emailError : null
-            }
-          </div>
+          
           <TextField
             id="password-input"
             name="password"
@@ -100,11 +102,7 @@ class Login extends Component {
             value={this.state.password}
             onChange={this.onChange}
           />
-          <div className={classes.error}> 
-            {
-              this.state.passwordError ? this.state.passwordError : null
-            }
-          </div>
+         
           <Button onClick={this.onSubmit} variant="outlined" color={this.state.signInButtonColor} className={classes.button}>
             Login
           </Button>

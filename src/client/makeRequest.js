@@ -11,15 +11,17 @@ const makeRequest = (url, method, token, data ) => {
     body: JSON.stringify(data)
   })
     .then(response => {
-      if (response.status === 401) {
-        history.default.replace('/login');
-      } else if (response.status === 400) {
-        console.warn('Bad request');
-        return null;
-      } else if (response.status === 200) {
-        return response.json();
-      } else {
-        console.log('Response status is not 200')
+      switch(response.status) {
+        case 401:
+          history.default.replace('/login');
+          break;
+        case 400:
+          console.warn('Bad request');
+          return null;
+        case 200:
+          return response.json();
+        default:
+          console.log('Response status is not 200')
       }
     })
     .catch(err => {

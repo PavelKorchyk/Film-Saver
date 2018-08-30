@@ -42,7 +42,7 @@ module.exports = {
     new CleanWebpackPlugin([outputDirectory]),
     new HtmlWebpackPlugin({
       template: './public/index.html',
-      film: './public/film.ico'
+      favicon: './public/film.ico',
     })
   ]
 };

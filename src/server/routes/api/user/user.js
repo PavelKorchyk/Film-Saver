@@ -10,10 +10,14 @@ const User = require('../../../models/user');
 //Register Form
 router.post('/signup', (req, res, next) => {
   if (
-    validator.isEmail(req.body.email) &
-    validator.isAlphanumeric(req.body.password) &
+    validator.isEmail(req.body.email) &&
+    validator.isAlphanumeric(req.body.password) &&
     validator.isAlphanumeric(req.body.username)
-  ) next();
+  ) {
+    next();
+  } else {
+    res.status(400).json({message: "not ok", email: "Invalid data"})
+  }
 }) 
   .use((req, res, next) => {
     User

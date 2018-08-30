@@ -9,7 +9,8 @@ import Button from '@material-ui/core/Button';
 import validate from '../../validate';
 import makeRequest from '../../makeRequest';
 import history from '../../history';
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
+import shouldRender from '../../shouldRender';
 
 const mapStateToProps = store => {
   return {token: store.user.token};
@@ -26,7 +27,6 @@ class Login extends Component {
       errors: '',
       numOfSignUpAttempts: 0,
       signUpButtonColor: "primary",
-      response: {},
     };
   }
 
@@ -44,12 +44,15 @@ class Login extends Component {
         username: this.state.username,
         passwordConfirmation: this.state.passwordConfirmation,
       }
-      this.setState({ errors: validate(errors), response: {} });
+      this.setState({ errors: validate(errors) });
     });
   }
 
   handleSubmit = () => {
-    this.setState({ numOfSignUpAttempts: this.state.numOfSignUpAttempts + 1 })
+    this.setState({ numOfSignUpAttempts: this.state.numOfSignUpAttempts + 1 });
+    if (this.state.numOfSignUpAttempts > 0 && this.state.errors) {
+      this.setState({ signUpButtonColor: "secondary" });
+    }
     if (Object.keys(this.state.errors).length === 0) {
       const url = 'api/user/signup';
       const method = 'POST';
@@ -61,7 +64,7 @@ class Login extends Component {
       makeRequest(url, method, null, data)
       .then(response => {
         if (response.message || !response) {
-          this.setState({ signUpButtonColor: "secondary", response });
+          this.setState({ signUpButtonColor: "secondary" });
         } else {
           history.replace('/login')
         }
@@ -87,8 +90,7 @@ class Login extends Component {
           />
           <div className={classes.error}> 
             {
-              this.state.response.email ? this.state.response.email :
-              (this.state.numOfSignUpAttempts > 0 ? this.state.errors.email : null)
+              shouldRender(this.state.numOfSignUpAttempts > 0, this.state.errors.email)
             }
           </div>
           <TextField
@@ -102,9 +104,8 @@ class Login extends Component {
           />
           <div className={classes.error}>
           {
-              this.state.response.username ? this.state.response.username :
-              (this.state.numOfSignUpAttempts > 0 ? this.state.errors.username : null)
-            }
+              shouldRender(this.state.numOfSignUpAttempts > 0, this.state.errors.username)
+          }
           </div>
           <TextField
             id="password"
@@ -115,7 +116,11 @@ class Login extends Component {
             onChange={this.onFieldChange}
             value={this.state.password}
           />
-          <div className={classes.error}>{this.state.numOfSignUpAttempts > 0 ? this.state.errors.password : null}</div>
+          <div className={classes.error}>
+            {
+              shouldRender(this.state.numOfSignUpAttempts > 0, this.state.errors.password)
+            }
+          </div>
           <TextField
             id="passwordConfirmation"
             label="Confirm password"
@@ -125,7 +130,11 @@ class Login extends Component {
             onChange={this.onFieldChange}
             value={this.state.passwordConfirmation}
           />
-          <div className={classes.error}>{this.state.numOfSignUpAttempts > 0 ? this.state.errors.passwordConfirmation : null}</div>
+          <div className={classes.error}>
+          {
+            shouldRender(this.state.numOfSignUpAttempts > 0, this.state.errors.passwordConfirmation)
+          }
+          </div>
           <Button onClick={this.handleSubmit} variant="outlined" color={this.state.signUpButtonColor} className={classes.button}>
             SignUp
           </Button>
