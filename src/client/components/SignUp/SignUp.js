@@ -10,7 +10,7 @@ import validate from '../../validate';
 import makeRequest from '../../makeRequest';
 import history from '../../history';
 import { connect } from 'react-redux';
-import Errors from '../Errors/Errors';
+import ErrorMessage from '../ErrorMessage/ErrorMessage';
 
 const mapStateToProps = store => {
   return {token: store.user.token};
@@ -38,7 +38,7 @@ class Login extends Component {
 
   onFieldChange = (e) => {
     this.setState({[e.target.id]: e.target.value}, () => {
-      let errors = {
+      const errors = {
         password: this.state.password,
         email: this.state.email,
         username: this.state.username,
@@ -97,7 +97,7 @@ class Login extends Component {
             onChange={this.onFieldChange}
             value={this.state.email}
           />
-          <Errors error={this.state.errors.email} condition={this.state.numOfSignUpAttempts > 0} />
+          <ErrorMessage error={this.state.errors.email} condition={this.state.numOfSignUpAttempts > 0} />
           <TextField
             id="username"
             label="User Name"
@@ -107,7 +107,7 @@ class Login extends Component {
             onChange={this.onFieldChange}
             value={this.state.username}
           />
-          <Errors error={this.state.errors.username} condition={this.state.numOfSignUpAttempts > 0} />
+          <ErrorMessage error={this.state.errors.username} condition={this.state.numOfSignUpAttempts > 0} />
           <TextField
             id="password"
             label="Password"
@@ -117,7 +117,7 @@ class Login extends Component {
             onChange={this.onFieldChange}
             value={this.state.password}
           />
-          <Errors error={this.state.errors.password} condition={this.state.numOfSignUpAttempts > 0} />
+          <ErrorMessage error={this.state.errors.password} condition={this.state.numOfSignUpAttempts > 0} />
           <TextField
             id="passwordConfirmation"
             label="Confirm password"
@@ -127,7 +127,7 @@ class Login extends Component {
             onChange={this.onFieldChange}
             value={this.state.passwordConfirmation}
           />
-          <Errors error={this.state.errors.passwordConfirmation} condition={this.state.numOfSignUpAttempts > 0} />
+          <ErrorMessage error={this.state.errors.passwordConfirmation} condition={this.state.numOfSignUpAttempts > 0} />
           <Button onClick={this.handleSubmit} variant="outlined" color={this.state.signUpButtonColor} className={classes.button}>
             SignUp
           </Button>

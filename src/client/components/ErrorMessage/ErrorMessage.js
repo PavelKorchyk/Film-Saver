@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import styles from './styles';
 
-class Errors extends Component {
+class ErrorMessage extends Component {
   constructor(props) {
     super(props);
   }
@@ -25,4 +25,4 @@ class Errors extends Component {
   }
 }
 
-export default withStyles(styles)(Errors);
+export default withStyles(styles)(ErrorMessage);

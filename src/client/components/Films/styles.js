@@ -12,7 +12,7 @@ const styles = theme => ({
     "justify-content": "center"
   },
   wrapper: {
-    "margin": "100px",
+    "margin": "200px",
     "display": "flex",
     "justify-content": "center",
   },

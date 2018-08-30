@@ -10,7 +10,7 @@ import makeRequest from '../../makeRequest';
 import history from '../../history';
 import { logIn } from '../../redux/actions/index'; 
 import { connect } from 'react-redux';
-import Errors from '../Errors/Errors';
+import ErrorMessage from '../ErrorMessage/ErrorMessage';
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -78,7 +78,7 @@ class Login extends Component {
       <form className={classes.root}>
         <Paper className={classes.paper} elevation={3}>
           <header className={classes.header}>Log in</header>
-          <Errors error={this.state.errors} condition={this.state.errors} />
+          <ErrorMessage error={this.state.errors} condition={this.state.errors} />
           <TextField
             id="email-input"
             name="email"
