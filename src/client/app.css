@@ -1,0 +1,7 @@
+body {
+  background: 
+    url('/public/bg.jpg')
+    center / cover
+    no-repeat
+    fixed;
+}

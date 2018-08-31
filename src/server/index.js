@@ -5,15 +5,15 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require('mongoose');
+const passport = require('./passport');
 require('dotenv').config({ path: 'src/server/variables.env' });
 
 const apiRouter = require('./routes/api/index');
-const userRouter = require('./routes/user');
-const indexRouter = require('./routes/index');
 
 const app = express();
 const accessLogStream = fs.createWriteStream(path.join(__dirname, 'access.log'), {flags: 'a'});
 
+mongoose.set('debug', true);
 mongoose.connect(`mongodb://${process.env.MONGO_USER_NAME}:${process.env.MONGO_PW}${process.env.MONGO_DB_INFO}`, { useNewUrlParser: true });
 
 // view engine setup
@@ -26,10 +26,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'client')));
+app.use(passport.initialize());
 
-app.use('/', indexRouter);
-app.use('/user', userRouter);
-app.use('/api/', apiRouter);
+app.use('/api', apiRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

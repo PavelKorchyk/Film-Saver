@@ -1,15 +1,14 @@
 const mongoose = require('mongoose');
-const mongoosePaginate = require('mongoose-paginate');
+const Schema = mongoose.Schema;
 
-const filmsSchema = mongoose.Schema({
-  _id: mongoose.Schema.Types.ObjectId,
+const FilmsSchema = Schema({
+  _id: Schema.Types.ObjectId,
   title: String,
   description: String,
   avatar: String,
   gallery: Array,
   rating: Number,
-  category: String,
+  categories: {type: Schema.Types.ObjectId, ref: 'Categories'},
 });
-filmsSchema.plugin(mongoosePaginate);
 
-module.exports = mongoose.model('Films', filmsSchema);
+module.exports = mongoose.model('Films', FilmsSchema);

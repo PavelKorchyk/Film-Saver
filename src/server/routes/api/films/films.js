@@ -1,8 +1,9 @@
-const {DEFAULT_QUERY_LIMIT} = require('../../constants/constants'); 
-const {DEFAULT_QUERY_OFFSET} = require('../../constants/constants');
+const {DEFAULT_QUERY_FILMS_LIMIT} = require('../../constants/constants'); 
+const {DEFAULT_QUERY_FILMS_OFFSET} = require('../../constants/constants');
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
+const passport = require('../../../passport');
 
 const Films = require('../../../models/films');
 
@@ -12,12 +13,12 @@ const putFilmsSchema = require('../../../validationSchemas/putFilmsSchema');
 
 router
   .get('/', (req, res, next) => {
-    Films.paginate({ 
-      category: req.query.category || { $ne: "" },
-     }, { 
-      offset: Number(req.query.offset) || DEFAULT_QUERY_OFFSET, 
-      limit: Number(req.query.limit) || DEFAULT_QUERY_LIMIT 
-    })
+    Films
+      .find({}, null, {      
+        skip: Number(req.query.offset) || DEFAULT_QUERY_FILMS_OFFSET, 
+        limit: Number(req.query.limit) || DEFAULT_QUERY_FILMS_LIMIT,
+      })
+      .populate('categories')
       .then(result => {
         res.status(200).json(result);
       })
@@ -42,7 +43,7 @@ router
       })
   })
 
-  .post('/', dataValidation(postFilmsSchema),
+  .post('/', passport.authenticate('jwt', { session: false }), dataValidation(postFilmsSchema),
   (req, res, next) => {
     const films = new Films({
       _id: new mongoose.Types.ObjectId(),
@@ -62,7 +63,7 @@ router
       })
   })
 
-  .put('/:id', dataValidation(putFilmsSchema),
+  .put('/:id', passport.authenticate('jwt', { session: false }), dataValidation(putFilmsSchema),
   (req, res, next) => {
     Films.findByIdAndUpdate(req.params.id, req.body, { new: true })
       .exec()
@@ -78,7 +79,7 @@ router
       });
   })
   
-  .delete('/:id', (req, res, next) => {
+  .delete('/:id', passport.authenticate('jwt', { session: false }), (req, res, next) => {
     const id = req.params.id;
     Films.remove({ _id: id })
       .exec()
