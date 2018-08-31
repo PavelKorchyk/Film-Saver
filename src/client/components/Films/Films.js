@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import makeRequest from '../../makeRequest';
+import makeRequest from '../../services/makeRequest';
 import { connect } from "react-redux";
 import { withStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -8,6 +8,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import styles from './styles';
+import history from '../../services/history';
 
 const mapStateToProps = store => {
   return {token: store.user.token};
@@ -31,7 +32,11 @@ class Films extends Component {
     return <div className={classes.root}>
         <div className={classes.paper}>
           {films.map(film => (
-            <Card onClick={() => { console.log('onClick'); }} key={film._id} className={classes.card}>
+            <Card onClick={() => { 
+              history.push({
+                pathname: `/films/${film._id}`,
+              }); 
+            }} key={film._id} className={classes.card}>
               <CardActionArea>
                 <CardMedia
                   component="img"

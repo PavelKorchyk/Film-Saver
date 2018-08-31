@@ -30,6 +30,7 @@ router
   .get('/:id', (req, res, next) => {
     const id = req.params.id;
     Films.findById(id)
+      .populate('categories')
       .exec()
       .then(result => {
         if (result) {

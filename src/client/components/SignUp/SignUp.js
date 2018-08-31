@@ -6,9 +6,9 @@ import styles from './styles';
 import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
-import validate from '../../validate';
-import makeRequest from '../../makeRequest';
-import history from '../../history';
+import validate from '../../services/validate';
+import makeRequest from '../../services/makeRequest';
+import history from '../../services/history';
 import { connect } from 'react-redux';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
 
