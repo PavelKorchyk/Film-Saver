@@ -31,7 +31,7 @@ const App = () => {
               <Route exact path='/404'component={NotFound}/>
               <Route exact path='/login'component={Login}/>
               <Route exact path='/signup'component={SignUp}/>
-              {/* <Redirect to='/404' /> */}
+              <Redirect to='/404' />
             </Switch>
           </div>
         </Router>
