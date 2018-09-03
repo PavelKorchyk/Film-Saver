@@ -4,7 +4,7 @@ import NavBar from './components/Navbar/NavBar';
 import Login from './components/Login/Login';
 import NotFound from './components/NotFound/NotFound';
 import SignUp from './components/SignUp/SignUp';
-import Films from './components/Films/Films';
+import Films from './components/Films/FilmsConteiner';
 import Genres from './components/Genres/Genres';
 import Film from './components/Film/Film';
 import history from './services/history';
@@ -12,6 +12,7 @@ import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/es/integration/react';
 import configureStore from './services/configureStore';
 import './app.css';
+import Genre from './components/Genre/Genre';
 
 const { persistor, store } = configureStore();
 
@@ -24,12 +25,13 @@ const App = () => {
             <NavBar />
             <Switch>
               <Route exact path='/'component={Films}/>
+              <Route exact path='/films/:id'component={Film}/>
+              <Route exact path='/genres'component={Genres}/>
+              <Route exact path='/genres/:id'component={Genre}/>
               <Route exact path='/404'component={NotFound}/>
               <Route exact path='/login'component={Login}/>
               <Route exact path='/signup'component={SignUp}/>
-              <Route exact path='/films/:id'component={Film}/>
-              <Route exact path='/genres'component={Genres}/>
-              <Redirect to='/404' />
+              {/* <Redirect to='/404' /> */}
             </Switch>
           </div>
         </Router>

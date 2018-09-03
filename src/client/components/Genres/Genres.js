@@ -34,14 +34,14 @@ class Genres extends Component {
           {genres.map(genre => (
             <Card onClick={() => { 
                 history.push({
-                  pathname: `genre/${genre._id}`,
+                  pathname: `genres/${genre._id}`,
                 }); 
               }} key={genre._id} className={classes.card}>
               <CardActionArea>
                 <CardMedia
                   component="img"
                   className={classes.media}
-                  height="400"
+                  height="320"
                   image={genre.avatar}
                   title={genre.title}
                 />
@@ -62,7 +62,7 @@ class Genres extends Component {
 
   render() {
     const { classes } = this.props;
-    if(!this.state.result) {
+    if (Object.keys(this.state.result).length === 0) {
       return <div className={classes.wrapper}>
         <img src={"https://upload.wikimedia.org/wikipedia/commons/6/63/Elipsis.gif"} alt="" className={classes.elipsis} />
       </div>

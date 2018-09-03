@@ -8,7 +8,6 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import Avatar from '@material-ui/core/Avatar';
-import ImageIcon from '@material-ui/icons/Image';
 import StarRate from '@material-ui/icons/StarRate';
 import Style from '@material-ui/icons/Style';
 import Description from '@material-ui/icons/Description';
@@ -57,9 +56,7 @@ class Film extends Component {
                     </Avatar>
                     <ListItemText primary="Genre" secondary={film.categories.title}/>
                   </ListItem>
-                  <li>
-                    <Divider inset />
-                  </li>
+                  <Divider inset component="li" />
                   <ListItem>
                     <Avatar>
                       <StarRate />

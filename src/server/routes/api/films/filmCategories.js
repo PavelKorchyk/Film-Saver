@@ -18,7 +18,7 @@ router
         skip: Number(req.query.offset) || DEFAULT_QUERY_CATEGORIES_OFFSET, 
         limit: Number(req.query.limit) || DEFAULT_QUERY_CATEGORIES_LIMIT,
       })
-      .populate('films')
+      // .populate('films')
       .then(result => {
         res.status(200).json(result);
       })

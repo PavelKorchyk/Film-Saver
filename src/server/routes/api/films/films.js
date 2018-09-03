@@ -14,11 +14,10 @@ const putFilmsSchema = require('../../../validationSchemas/putFilmsSchema');
 router
   .get('/', (req, res, next) => {
     Films
-      .find({}, null, {      
+      .find({ title: (new RegExp(req.query.title)) }, null, {      
         skip: Number(req.query.offset) || DEFAULT_QUERY_FILMS_OFFSET, 
         limit: Number(req.query.limit) || DEFAULT_QUERY_FILMS_LIMIT,
       })
-      .populate('categories')
       .then(result => {
         res.status(200).json(result);
       })
@@ -53,7 +52,7 @@ router
       avatar: req.body.avatar,
       gallery: req.body.gallery,
       rating: req.body.rating,
-      category: req.body.category,
+      categories: req.body.categories,
     });
     films.save()
       .then(result => {

@@ -6,6 +6,7 @@ const FilmCategoriesSchema = Schema({
   title: String,
   description: String,
   films: [{ type: Schema.Types.ObjectId, ref: 'Films' }],
+  avatar: String,
 });
 
 module.exports = mongoose.model('Categories', FilmCategoriesSchema);

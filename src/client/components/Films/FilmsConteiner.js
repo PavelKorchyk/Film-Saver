@@ -19,11 +19,46 @@ class Films extends Component {
     super(props);
     this.state = {
       result: [],
+      isLoading: false,
+      isLoadingDone: false,
+      offset: 0,
     }
   }
 
   componentDidMount() {
-    makeRequest('/api/films', 'GET').then(result => this.setState({ result }))
+    if (this.props.films) {
+      this.setState({ result: this.props.films })
+    } else {
+      this.paginatedLoading();
+    window.addEventListener('scroll', this.onScroll, false);
+    }
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.onScroll, false);
+  }
+
+  onScroll = () => {
+    if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 1000) && !this.state.isLoading && !this.state.isLoadingDone) {
+      this.paginatedLoading();
+    }
+  }
+
+  paginatedLoading =() => {
+    this.setState({ isLoading: true });
+    makeRequest(`/api/films/?offset=${this.state.offset}`, 'GET')
+      .then(result => {
+        if (result.length === 0) {
+          this.setState({ isLoadingDone: true })
+        };
+        if (Object.keys(this.state.result).length === 0) {
+          this.setState({ result });
+        } else {
+          this.setState({ result: [...this.state.result, ...result] })
+        }
+      })
+      .then(() => this.setState({ offset: this.state.offset + 10, isLoading: false }))
+      .catch(err => console.log(err));
   }
   
   filmRender() {
@@ -41,7 +76,7 @@ class Films extends Component {
                 <CardMedia
                   component="img"
                   className={classes.media}
-                  height="500"
+                  height="450"
                   image={film.avatar}
                   title={film.title}
                 />
@@ -62,7 +97,7 @@ class Films extends Component {
 
   render() {
     const { classes } = this.props;
-    if(!this.state.result) {
+    if (Object.keys(this.state.result).length === 0) {
       return <div className={classes.wrapper}>
         <img src={"https://upload.wikimedia.org/wikipedia/commons/6/63/Elipsis.gif"} alt="" className={classes.elipsis} />
       </div>
