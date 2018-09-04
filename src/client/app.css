@@ -4,6 +4,7 @@ body {
     center / cover
     no-repeat
     fixed;
+  margin: 0;
 }
 
 * {

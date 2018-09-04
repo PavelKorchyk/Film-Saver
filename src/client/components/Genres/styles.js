@@ -1,6 +1,6 @@
 const styles = theme => ({
   root: {
-    "margin-top": "20px",
+    "margin-top": "10px",
   },
   card: {
     maxWidth: 600,

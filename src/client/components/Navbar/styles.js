@@ -2,9 +2,11 @@ const styles = theme => ({
   root: {
     flexGrow: 1,
   },
+  titleButton: {
+    "text-decoration": "none",
+  },
   flex: {
     flexGrow: 1,
-    "text-decoration": "none",
   },
   bootstrapRoot: {
     padding: 0,

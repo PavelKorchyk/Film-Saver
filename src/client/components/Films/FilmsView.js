@@ -29,7 +29,7 @@ class FilmsView extends Component {
               <CardMedia
                 component="img"
                 className={classes.media}
-                height="450"
+                height="400"
                 image={film.avatar}
                 title={film.title}
               />

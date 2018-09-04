@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { logOut, addSearchValue, removeSearchValue, searchOn, searchOff } from '../../redux/actions';
 import history from '../../services/history';
 import Loading from '../Loading/Loading';
+import NoData from '../NoData/NoData';
 
 const mapStateToProps = store => {
   return {
@@ -32,6 +33,7 @@ class Films extends Component {
       isLoading: false,
       isLoadingDone: false,
       offset: 0,
+      error: false,
     }
   }
  
@@ -84,7 +86,10 @@ class Films extends Component {
         }
       })
       .then(() => this.setState({ offset: this.state.offset + 10, isLoading: false }))
-      .catch(err => console.log(err));
+      .catch(err => {
+        this.setState({ error: true }),
+        console.log(err)
+      });
   }
 
   render() {

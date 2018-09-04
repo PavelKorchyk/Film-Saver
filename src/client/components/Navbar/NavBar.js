@@ -66,11 +66,12 @@ class NavBar extends Component {
       <div className={classes.root}>
         <AppBar position="static">
           <Toolbar>
-            <Button color="inherit" className={classes.flex} onClick={this.toHomePage} >
+            <Button color="inherit" className={classes.titleButton} onClick={this.toHomePage} >
               <Typography variant="title" color="inherit" >
                 Films Saver
               </Typography>
             </Button>
+            <div className={classes.flex}></div>
             <TextField
               id="searchValue"
               onChange={this.onTextChange}

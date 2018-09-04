@@ -13,9 +13,6 @@ const makeRequest = (url, method, token, data ) => {
   })
     .then(response => {
       switch(response.status) {
-        case 500:
-          history.default.replace('/nodata');
-          break;
         case 401:
           history.default.replace('/login');
           break;
