@@ -1,6 +1,7 @@
 const history = require('./history');
 
 const makeRequest = (url, method, token, data ) => {
+  console.log(url)
   let headers = new Headers();
   headers.set("Authorization", `JWT ${token}`);
   headers.set("Content-Type", "application/json");
@@ -12,6 +13,9 @@ const makeRequest = (url, method, token, data ) => {
   })
     .then(response => {
       switch(response.status) {
+        case 500:
+          history.default.replace('/nodata');
+          break;
         case 401:
           history.default.replace('/login');
           break;

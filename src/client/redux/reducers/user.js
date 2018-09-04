@@ -3,6 +3,8 @@ const initialState = {
   username: '',
   token: '',
   isLogedIn: false,
+  isSearchOn: false,
+  searchValue: '',
 }
 
 const user = (state = initialState, action) => {
@@ -22,6 +24,26 @@ const user = (state = initialState, action) => {
         username: null,
         token: null,
         isLogedIn: false,
+      }
+    case 'SEARCH_ON':
+      return {
+        ...state,
+        isSearchOn: true,
+      }
+    case 'SEARCH_OFF':
+      return {
+        ...state,
+        isSearchOn: false,
+      }
+    case 'ADD_SEARCH_VALUE':
+      return {
+        ...state,
+        searchValue: action.searchValue,
+      }
+    case 'REMOVE_SEARCH_VALUE':
+      return {
+        ...state,
+        searchValue: '',
       }
     default:
       return state;

@@ -9,6 +9,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import styles from './styles';
 import history from '../../services/history';
+import Loading from '../Loading/Loading';
 
 const mapStateToProps = store => {
   return {token: store.user.token};
@@ -61,11 +62,8 @@ class Genres extends Component {
   }
 
   render() {
-    const { classes } = this.props;
     if (Object.keys(this.state.result).length === 0) {
-      return <div className={classes.wrapper}>
-        <img src={"https://upload.wikimedia.org/wikipedia/commons/6/63/Elipsis.gif"} alt="" className={classes.elipsis} />
-      </div>
+      return <Loading />
     }
     return this.genresRender();
   }

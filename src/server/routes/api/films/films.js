@@ -13,12 +13,16 @@ const putFilmsSchema = require('../../../validationSchemas/putFilmsSchema');
 
 router
   .get('/', (req, res, next) => {
+    console.log("Query:", req.query)
     Films
-      .find({ title: (new RegExp(req.query.title)) }, null, {      
+      .find({ title: (new RegExp(req.query.title, "i")) }, null, {      
         skip: Number(req.query.offset) || DEFAULT_QUERY_FILMS_OFFSET, 
         limit: Number(req.query.limit) || DEFAULT_QUERY_FILMS_LIMIT,
       })
       .then(result => {
+        if (result.length === 0) {
+          throw new Error('no data fund');
+        }
         res.status(200).json(result);
       })
       .catch(err => {

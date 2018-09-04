@@ -3,7 +3,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { composeWithDevTools } from 'redux-devtools-extension';
  
-import rootReducer from '../redux/reducers';
+import rootReducer from '../redux/reducers/index';
  
 const persistConfig = {
   key: 'root',

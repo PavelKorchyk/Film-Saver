@@ -15,6 +15,7 @@ import Divider from '@material-ui/core/Divider';
 import makeRequest from '../../services/makeRequest';
 import styles from './styles';
 import history from '../../services/history';
+import Loading from '../Loading/Loading';
 
 
 const mapStateToProps = store => ({ token: store.user.token });
@@ -28,7 +29,7 @@ class Film extends Component {
   }
 
   componentDidMount() {
-    makeRequest(`/api/${history.location.pathname}`, 'GET').then(result => this.setState({ result }));
+    makeRequest(`/api${history.location.pathname}`, 'GET').then(result => this.setState({ result }));
   }
 
   filmRender() {
@@ -87,11 +88,8 @@ class Film extends Component {
   }
 
   render() {
-    const { classes } = this.props;
     if(!this.state.result.categories && !this.state.result.gallery) {
-      return <div className={classes.wrapper}>
-        <img src={'https://upload.wikimedia.org/wikipedia/commons/6/63/Elipsis.gif'} alt="" className={classes.elipsis} />
-      </div>
+      return <Loading />
     }
     return this.filmRender();
   }
