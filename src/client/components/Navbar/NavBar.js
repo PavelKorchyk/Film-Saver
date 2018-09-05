@@ -103,6 +103,16 @@ class NavBar extends Component {
     this.handleClose();
   }
 
+  sortByNameAZ = () => {
+    this.props.changeSearchConditions('title', "1");
+    this.handleClose();
+  }
+
+  sortByNameZA = () => {
+    this.props.changeSearchConditions('title', "-1");
+    this.handleClose();
+  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -128,7 +138,8 @@ class NavBar extends Component {
                   <Menu id="sort-menu" open={this.state.isSortOpen} anchorEl={this.state.anchorEl} onClose={this.handleClose}>
                     <MenuItem onClick={this.sortByDefault}>By default</MenuItem>
                     <MenuItem onClick={this.sortByLastUpdated}>Last Updated</MenuItem>
-                    {/* <MenuItem onClick={this.handleClick}>Logout</MenuItem> */}
+                    <MenuItem onClick={this.sortByNameAZ}>Name A-Z</MenuItem>
+                    <MenuItem onClick={this.sortByNameZA}>Name Z-A</MenuItem>
                   </Menu>
               </React.Fragment>
               <TextField

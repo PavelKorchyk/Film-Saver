@@ -58,7 +58,7 @@ class Films extends Component {
   }
 
   onScroll = () => {
-    if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 1000) && !this.state.isLoading && !this.state.isLoadingDone) {
+    if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 1200) && !this.state.isLoading && !this.state.isLoadingDone) {
       this.paginatedLoading();
     }
   }
