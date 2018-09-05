@@ -5,6 +5,8 @@ body {
     no-repeat
     fixed;
   margin: 0;
+  overflow-y: scroll !important;
+  padding: 0 !important;
 }
 
 * {

@@ -25,3 +25,9 @@ export const addSearchValue = (searchValue) => ({
 export const removeSearchValue = () => ({
   type: 'REMOVE_SEARCH_VALUE',
 })
+
+export const changeSearchConditions = (sortType, sortValue) => ({
+  type: 'CHANGE_SEARCH_CONDITIONS',
+  sortType,
+  sortValue
+})

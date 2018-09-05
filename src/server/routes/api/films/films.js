@@ -13,11 +13,15 @@ const putFilmsSchema = require('../../../validationSchemas/putFilmsSchema');
 
 router
   .get('/', (req, res, next) => {
+    const wayToSort = {
+      [req.query.sortType]: req.query.sortValue
+    }
     console.log("Query:", req.query)
     Films
       .find({ title: (new RegExp(req.query.title, "i")) }, null, {      
         skip: Number(req.query.offset) || DEFAULT_QUERY_FILMS_OFFSET, 
         limit: Number(req.query.limit) || DEFAULT_QUERY_FILMS_LIMIT,
+        sort: wayToSort
       })
       .then(result => {
         if (result.length === 0) {

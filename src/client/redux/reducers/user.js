@@ -5,6 +5,8 @@ const initialState = {
   isLogedIn: false,
   isSearchOn: false,
   searchValue: '',
+  sortType: '$natural',
+  sortValue: '1',
 }
 
 const user = (state = initialState, action) => {
@@ -44,6 +46,12 @@ const user = (state = initialState, action) => {
       return {
         ...state,
         searchValue: '',
+      }
+    case 'CHANGE_SEARCH_CONDITIONS':
+      return {
+        ...state,
+        sortType: action.sortType,
+        sortValue: action.sortValue,
       }
     default:
       return state;

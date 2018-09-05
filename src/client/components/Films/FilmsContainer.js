@@ -12,6 +12,8 @@ const mapStateToProps = store => {
     token: store.user.token,
     isSearchOn: store.user.isSearchOn,
     searchValue: store.user.searchValue,
+    sortType: store.user.sortType,
+    sortValue: store.user.sortValue,
   };
 };
 
@@ -44,7 +46,7 @@ class Films extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.searchValue !== this.props.searchValue) {
+    if (prevProps.searchValue !== this.props.searchValue || prevProps.sortType !== this.props.sortType || prevProps.sortValue !== this.props.sortValue) {
       this.setState({ result: [], offset: 0 }, () => this.paginatedLoading());
     }
   }
@@ -64,9 +66,9 @@ class Films extends Component {
   createUrl = () => {
     let url;
     if (this.props.searchValue) {
-      url = `/api/films/?title=${this.props.searchValue}&offset=${this.state.offset}`;
+      url = `/api/films/?title=${this.props.searchValue}&offset=${this.state.offset}&sortType=${this.props.sortType}&sortValue=${this.props.sortValue}`;
     } else {
-      url = `/api/films/?offset=${this.state.offset}`;
+      url = `/api/films/?offset=${this.state.offset}&sortType=${this.props.sortType}&sortValue=${this.props.sortValue}`;
     }
     return url
   }
