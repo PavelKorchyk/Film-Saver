@@ -8,6 +8,34 @@ const bcrypt = require('bcrypt');
 const User = require('../../../models/user');
 
 //Register Form
+router.get('/', (req, res, next) => {
+  User
+  .find({})
+  .then(result => {
+    if (result.length === 0) {
+      throw new Error('no data fund');
+    }
+    res.status(200).json(result);
+  })
+  .catch(err => {
+    res.status(500).json({error: err});
+  })
+})
+router.put('/:id', (req, res, next) => {
+  User.findByIdAndUpdate(req.params.id, req.body, { new: true })
+    .populate('films')
+    .exec()
+    .then(result => {
+      if (!result) {
+        res.status(400).json(result);
+      } else {
+        res.status(200).json(result);
+      }
+    })
+    .catch(err => {
+      res.status(500).json({ error: err});
+    });
+})
 router.post('/signup', (req, res, next) => {
   if (
     validator.isEmail(req.body.email) &&

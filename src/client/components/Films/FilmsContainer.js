@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import makeRequest from '../../services/makeRequest';
 import FilmsView from './FilmsView';
 import { connect } from "react-redux";
-import { logOut, addSearchValue, removeSearchValue, searchOn, searchOff } from '../../redux/actions';
+import { logOut, addSearchValue, removeSearchValue } from '../../redux/actions';
 import history from '../../services/history';
 import Loading from '../Loading/Loading';
 import NoData from '../NoData/NoData';
@@ -10,7 +10,6 @@ import NoData from '../NoData/NoData';
 const mapStateToProps = store => {
   return {
     token: store.user.token,
-    isSearchOn: store.user.isSearchOn,
     searchValue: store.user.searchValue,
     sortType: store.user.sortType,
     sortValue: store.user.sortValue,
@@ -20,8 +19,6 @@ const mapStateToProps = store => {
 const mapDispatchToProps = dispatch => {
   return {
     logOut: () => dispatch(logOut()),
-    searchOn: () => dispatch(searchOn()),
-    searchOff: () => dispatch(searchOff()),
     addSearchValue: (searchValue) => dispatch(addSearchValue(searchValue)),
     removeSearchValue: () => dispatch(removeSearchValue()),
   };
@@ -40,7 +37,6 @@ class Films extends Component {
   }
  
   componentDidMount() {
-    this.props.searchOn();
     this.paginatedLoading();
     window.addEventListener('scroll', this.onScroll, false);
   }
@@ -52,7 +48,6 @@ class Films extends Component {
   }
 
   componentWillUnmount() {
-    this.props.searchOff();
     this.props.removeSearchValue();
     window.removeEventListener('scroll', this.onScroll, false);
   }

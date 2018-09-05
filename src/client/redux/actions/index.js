@@ -1,5 +1,6 @@
 export const logIn = user => ({
   type: 'LOGIN',
+  userId: user._id,
   email: user.email,
   username: user.username,
   token: user.token,
@@ -7,14 +8,6 @@ export const logIn = user => ({
 
 export const logOut = () => ({
   type: 'LOGOUT',
-})
-
-export const searchOn = () => ({
-  type: 'SEARCH_ON',
-})
-
-export const searchOff = () => ({
-  type: 'SEARCH_OFF',
 })
 
 export const addSearchValue = (searchValue) => ({

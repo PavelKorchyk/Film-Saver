@@ -1,9 +1,9 @@
 const initialState = {
   email: '',
+  userId: '',
   username: '',
   token: '',
   isLogedIn: false,
-  isSearchOn: false,
   searchValue: '',
   sortType: '$natural',
   sortValue: '1',
@@ -15,6 +15,7 @@ const user = (state = initialState, action) => {
       return {
         ...state,
         email: action.email,
+        userId: action.userId,
         username: action.username,
         token: action.token,
         isLogedIn: true,
@@ -26,16 +27,6 @@ const user = (state = initialState, action) => {
         username: null,
         token: null,
         isLogedIn: false,
-      }
-    case 'SEARCH_ON':
-      return {
-        ...state,
-        isSearchOn: true,
-      }
-    case 'SEARCH_OFF':
-      return {
-        ...state,
-        isSearchOn: false,
       }
     case 'ADD_SEARCH_VALUE':
       return {

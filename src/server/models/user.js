@@ -14,6 +14,12 @@ const UserSchema = Schema({
     type: String,
     required: true,
   },
+  ratedFilms: [
+    {
+      filmId: { type: Schema.Types.ObjectId, ref: 'Films' },
+      rating: Number,
+    }
+  ]
 });
 
 module.exports = mongoose.model('User', UserSchema);

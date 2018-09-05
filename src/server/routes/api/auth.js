@@ -26,7 +26,7 @@ router.post('/login', (req, res, next) => {
       .then(user => {
         const payload = { email: user.email, password: user.password };
         const token = jwt.sign(payload, config.secretOrKey);
-        res.json({ message: "ok", token: token, username: user.username, email: user.email }); 
+        res.json({ message: "ok", token: token, username: user.username, email: user.email, _id: user._id }); 
       })
       .catch(err => console.log(err));
   }  

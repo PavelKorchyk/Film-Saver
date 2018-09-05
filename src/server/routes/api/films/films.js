@@ -74,6 +74,24 @@ router
   .put('/:id', passport.authenticate('jwt', { session: false }), dataValidation(putFilmsSchema),
   (req, res, next) => {
     Films.findByIdAndUpdate(req.params.id, req.body, { new: true })
+      .populate('categories')
+      .exec()
+      .then(result => {
+        if (!result) {
+          res.status(400).json(result);
+        } else {
+          res.status(200).json(result);
+        }
+      })
+      .catch(err => {
+        res.status(500).json({ error: err});
+      });
+  })
+
+  .put('/:id/comment', passport.authenticate('jwt', { session: false }), dataValidation(putFilmsSchema),
+  (req, res, next) => {
+    console.log(req.body);
+    Films.findByIdAndUpdate(req.params.id, {$push: { comments: req.body }}, { new: true })
       .exec()
       .then(result => {
         if (!result) {

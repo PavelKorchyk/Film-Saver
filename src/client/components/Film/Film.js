@@ -16,20 +16,54 @@ import makeRequest from '../../services/makeRequest';
 import styles from './styles';
 import history from '../../services/history';
 import Loading from '../Loading/Loading';
+import StarRatings from 'react-star-ratings';
+import TextField from '@material-ui/core/TextField';
+import Send from '@material-ui/icons/Send';
+import Comments from './FilmCommentsView';
 
-
-const mapStateToProps = store => ({ token: store.user.token });
+const mapStateToProps = store => ({ 
+  token: store.user.token,
+  userId: store.user.userId, 
+  userName: store.user.username,
+});
 
 class Film extends Component {
   constructor(props) {
     super(props);
     this.state = {
       result: [],
+      rating: '',
+      comment: ''
     };
   }
 
   componentDidMount() {
-    makeRequest(`/api${history.location.pathname}`, 'GET').then(result => this.setState({ result }));
+    makeRequest(`/api${history.location.pathname}`, 'GET').then(result => this.setState({ result, rating: result.rating }));
+  }
+
+  changeRating = (e) => {
+    const data = {
+      rating: e,
+    };
+    this.setState({ rating: e }, () => 
+      makeRequest(`/api${history.location.pathname}`, 'PUT', this.props.token, data)
+      .then(result => this.setState({ result, rating: result.rating }))
+      .catch(err => console.log(err))
+  )}
+
+  onCommentFieldChange = (e) => {
+    this.setState({ comment: e.target.value })
+  }
+
+  sendComment = () => {
+    const data = {
+      user_id: this.props.userId,
+      userName: this.props.userName,
+      text: this.state.comment,
+    };
+    makeRequest(`/api${history.location.pathname}/comment`, 'PUT', this.props.token, data)
+      .then(result => this.setState({ result, comment: '' }))
+      .catch(err => console.log(err))
   }
 
   filmRender() {
@@ -40,12 +74,12 @@ class Film extends Component {
         thumbnailHeight: 100, }
     });
     return <div className={classes.root}>
-        <Paper className={classes.paper}>
+        <Paper className={classes.paperMainInfo}>
           <div className={classes.wrapper}>
             <img src={film.avatar} className={classes.avatar} />
           </div>
           <div className={classes.wrapper}>
-            <Typography variant="headline" component="h1"  className={classes.typography}>
+            <Typography variant="headline" className={classes.typographyh1}>
               {film.title}
             </Typography>
             <div>
@@ -74,6 +108,18 @@ class Film extends Component {
                 </List>
               </div>
             </div>
+            <div className={classes.rating}>
+              <Typography variant="headline" className={classes.typographyh2}>
+                Rate this film!
+              </Typography>
+              <StarRatings
+                rating={this.state.rating}
+                starRatedColor="blue"
+                changeRating={this.changeRating}
+                numberOfStars={5}
+                name='rating'
+              />
+            </div>
           </div>
         </Paper>
         <Paper className={classes.imgGallery}>
@@ -83,6 +129,29 @@ class Film extends Component {
             rowHeight={180}
             maxRows={1}
           />
+        </Paper>
+        <Paper className={classes.paperComments}>
+          <div className={classes.commentWrapper}>
+            <header>
+              <Typography variant="headline" className={classes.commentHeader}>
+                Comments
+              </Typography>
+            </header>
+            <div className={classes.commentField}>
+              <TextField
+                id="comment-input"
+                placeholder="Your comment goes here..."
+                className={classes.textField}
+                margin="normal"
+                multiline={true}
+                value={this.state.comment}
+                onChange={this.onCommentFieldChange}
+                disabled={!this.props.token}
+              />
+              <Send color={"primary"} className={classes.button} onClick={this.sendComment}/>
+            </div>
+          </div>
+          <Comments comments={film.comments}/>
         </Paper>
       </div>
   }

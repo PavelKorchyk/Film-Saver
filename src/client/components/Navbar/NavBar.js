@@ -14,15 +14,13 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ScrollUpButton from "react-scroll-up-button";
-import { logOut, addSearchValue, removeSearchValue, searchOn, searchOff, changeSearchConditions } from '../../redux/actions/index';
+import { logOut, addSearchValue, removeSearchValue, changeSearchConditions } from '../../redux/actions/index';
 import { connect } from "react-redux";
 import history from '../../services/history';
 
 const mapDispatchToProps = dispatch => {
   return {
     logOut: () => dispatch(logOut()),
-    searchOn: () => dispatch(searchOn()),
-    searchOff: () => dispatch(searchOff()),
     addSearchValue: (searchValue) => dispatch(addSearchValue(searchValue)),
     removeSearchValue: () => dispatch(removeSearchValue()),
     changeSearchConditions: (sortType, sortValue) => dispatch(changeSearchConditions(sortType, sortValue)),
@@ -42,9 +40,35 @@ class NavBar extends Component {
     this.state = {
       isSortOpen: false,
       anchorEl: null,
+      searchValue: '',
     }
   }
 
+  logOut = () => {
+    this.props.logOut();
+  }
+
+  clearSearchValue = () => {
+    this.setState({ searchValue: '' });
+    this.props.removeSearchValue();
+  }
+
+  //SEARCH
+  onTextChange = (e) => {
+    this.setState({ searchValue: e.target.value })    
+    if (e.key === "Enter") {
+      this.search();
+    }
+  }
+
+  search = () => {
+    this.props.addSearchValue(this.state.searchValue)
+    history.push({
+      pathname: '/',
+    })
+  }
+
+  //SORT
   handleClick = (event) => {
     event.persist()
     event.preventDefault()   
@@ -52,7 +76,6 @@ class NavBar extends Component {
       isSortOpen: !state.isSortOpen,
       anchorEl: event.target
     }));
-    console.log(event)
   };
 
   handleClickAway = () => {
@@ -64,35 +87,6 @@ class NavBar extends Component {
   handleClose = () => {
     this.setState({ anchorEl: null });
   };
-
-  logOut = () => {
-    this.props.logOut();
-  }
-
-  onTextChange = (e) => {
-    e.persist();
-    setTimeout(() => {
-      this.props.addSearchValue(e.target.value)    
-      if (e.key === "Enter") {
-        this.search();
-      }
-    }, 800)
-  }
-
-  search = () => {
-    this.props.searchOn();
-    history.push({
-      pathname: '/',
-    })
-  }
-
-  toHomePage = () => {
-    this.props.searchOff();
-    this.props.removeSearchValue();
-    history.push({
-      pathname: '/',
-    })
-  }
 
   sortByDefault = () => {
     this.props.changeSearchConditions('$natural', "1");
@@ -121,7 +115,7 @@ class NavBar extends Component {
         <ClickAwayListener onClickAway={this.handleClickAway}>
           <AppBar position="static">
             <Toolbar>
-              <Button color="inherit" className={classes.titleButton} onClick={this.toHomePage} >
+              <Button color="inherit" className={classes.titleButton} onClick={this.clearSearchValue} component={Link} to='/'>
                 <Typography variant="title" color="inherit" >
                   Films Saver
                 </Typography>
@@ -145,6 +139,7 @@ class NavBar extends Component {
               </React.Fragment>
               <TextField
                 id="searchValue"
+                value={this.state.searchValue}
                 onChange={this.onTextChange}
                 onKeyPress={this.onTextChange}
                 InputProps={{
@@ -158,9 +153,9 @@ class NavBar extends Component {
               <Button color="inherit" onClick={this.props.toggleSearch}>
                 <Search />
               </Button>
-              <Button color="inherit" onClick={this.toHomePage} >Films</Button>
-              <Button color="inherit"  component={Link} to='/genres'>Genres</Button>
-              { this.props.token ? (<Button color="inherit" onClick={this.logOut}>Logout</Button>) : (<Button color="inherit" component={Link} to='/login'>Login</Button>) }
+              <Button color="inherit" onClick={this.clearSearchValue} component={Link} to='/'>Films</Button>
+              <Button color="inherit" onClick={this.clearSearchValue}  component={Link} to='/genres'>Genres</Button>
+              { this.props.token ? (<Button color="inherit" onClick={this.logOut}>Logout</Button>) : (<Button color="inherit" onClick={this.clearSearchValue} component={Link} to='/login'>Login</Button>) }
             </Toolbar>
           </AppBar>
         </ClickAwayListener>

@@ -14,7 +14,7 @@ const makeRequest = (url, method, token, data ) => {
     .then(response => {
       switch(response.status) {
         case 401:
-          history.default.replace('/login');
+          history.default.push('/login');
           break;
         case 400:
           console.warn('Bad request');

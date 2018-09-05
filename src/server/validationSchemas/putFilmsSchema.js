@@ -8,6 +8,10 @@ const schema = {
   gallery: Joi.array().items(Joi.string().uri()).min(4),
   rating: Joi.number().min(0).max(5),
   categories: Joi.string(),
+  comments: Joi.array().items(Joi.object()),
+  user_id: Joi.string(),
+  userName: Joi.string(),
+  text: Joi.string(),
 };
 
 module.exports = schema;
