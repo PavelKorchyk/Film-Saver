@@ -87,6 +87,7 @@ router
   .put('/:id/comment', passport.authenticate('jwt', { session: false }), dataValidation(putFilmsSchema),
   (req, res, next) => {
     Films.findByIdAndUpdate(req.params.id, {$push: { comments: req.body }}, { new: true })
+      .populate('categories')
       .exec()
       .then(result => {
         if (!result) {

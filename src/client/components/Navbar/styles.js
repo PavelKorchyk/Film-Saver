@@ -1,6 +1,13 @@
 const styles = theme => ({
   root: {
     flexGrow: 1,
+    position: "-webkit-sticky",
+    position: "sticky",
+    top: "0px",
+    "z-index": "100"
+  },
+  havBar: {
+    
   },
   titleButton: {
     "text-decoration": "none",

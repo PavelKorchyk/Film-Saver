@@ -14,7 +14,7 @@ import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import ScrollUpButton from "react-scroll-up-button";
-import { logOut, addSearchValue, removeSearchValue, changeSearchConditions } from '../../redux/actions/index';
+import { logOut, addSearchValue, removeSearchValue, changeSearchConditions, loading } from '../../redux/actions/index';
 import { connect } from "react-redux";
 import history from '../../services/history';
 
@@ -24,6 +24,7 @@ const mapDispatchToProps = dispatch => {
     addSearchValue: (searchValue) => dispatch(addSearchValue(searchValue)),
     removeSearchValue: () => dispatch(removeSearchValue()),
     changeSearchConditions: (sortType, sortValue) => dispatch(changeSearchConditions(sortType, sortValue)),
+    loading: () => dispatch(loading()),
   };
 };
 
@@ -32,6 +33,7 @@ const mapStateToProps = store => {
     token: store.user.token,
     searchValue: store.user.searchValue,
     userName: store.user.username,
+    isLoadingDone: store.user.isLoadingDone,
   };
 };
 
@@ -52,6 +54,7 @@ class NavBar extends Component {
   clearSearchValue = () => {
     this.setState({ searchValue: '' });
     this.props.removeSearchValue();
+    this.props.loading();
     this.sortByDefault();
   }
 
@@ -64,7 +67,8 @@ class NavBar extends Component {
   }
 
   search = () => {
-    this.props.addSearchValue(this.state.searchValue)
+    this.props.addSearchValue(this.state.searchValue);
+    this.props.loading();
     history.push({
       pathname: '/',
     })
@@ -115,7 +119,7 @@ class NavBar extends Component {
     return (
       <div className={classes.root}>
         <ClickAwayListener onClickAway={this.handleClickAway}>
-          <AppBar position="static">
+          <AppBar position="sticky" className={classes.havBar} >
             <Toolbar>
               <Button color="inherit" className={classes.titleButton} onClick={this.clearSearchValue} component={Link} to='/'>
                 <Typography variant="title" color="inherit" >

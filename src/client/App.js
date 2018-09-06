@@ -20,7 +20,7 @@ const { persistor, store } = configureStore();
 const App = () => {
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
+      {/* <PersistGate loading={null} persistor={persistor}> */}
         <Router history={history}>
           <div>
             <NavBar />
@@ -38,7 +38,7 @@ const App = () => {
             </Switch>
           </div>
         </Router>
-      </PersistGate>
+      {/* </PersistGate> */}
     </Provider>
   );
 }

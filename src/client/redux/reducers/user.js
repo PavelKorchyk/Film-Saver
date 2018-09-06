@@ -5,6 +5,7 @@ const initialState = {
   token: '',
   isLogedIn: false,
   searchValue: '',
+  isLoadingDone: false,
   sortType: '$natural',
   sortValue: '1',
   ratedFilms: [],
@@ -41,6 +42,16 @@ const user = (state = initialState, action) => {
       return {
         ...state,
         searchValue: '',
+      }
+    case 'LOADING_DONE':
+      return {
+        ...state,
+        isLoadingDone: true,
+      }
+    case 'LOADING':
+      return {
+        ...state,
+        isLoadingDone: false,
       }
     case 'CHANGE_SEARCH_CONDITIONS':
       return {

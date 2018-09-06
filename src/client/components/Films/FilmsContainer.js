@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import makeRequest from '../../services/makeRequest';
 import FilmsView from './FilmsView';
 import { connect } from "react-redux";
-import { logOut, addSearchValue, removeSearchValue } from '../../redux/actions';
+import { logOut, addSearchValue, removeSearchValue, loadingDone } from '../../redux/actions';
 import history from '../../services/history';
 import Loading from '../Loading/Loading';
 import NoData from '../NoData/NoData';
@@ -13,6 +13,7 @@ const mapStateToProps = store => {
     searchValue: store.user.searchValue,
     sortType: store.user.sortType,
     sortValue: store.user.sortValue,
+    isLoadingDone: store.user.isLoadingDone,
   };
 };
 
@@ -21,6 +22,7 @@ const mapDispatchToProps = dispatch => {
     logOut: () => dispatch(logOut()),
     addSearchValue: (searchValue) => dispatch(addSearchValue(searchValue)),
     removeSearchValue: () => dispatch(removeSearchValue()),
+    loadingDone: () => dispatch(loadingDone()),
   };
 };
 
@@ -30,7 +32,6 @@ class Films extends Component {
     this.state = {
       result: [],
       isLoading: false,
-      isLoadingDone: false,
       offset: 0,
       error: false,
     }
@@ -53,7 +54,7 @@ class Films extends Component {
   }
 
   onScroll = () => {
-    if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 1200) && !this.state.isLoading && !this.state.isLoadingDone) {
+    if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 1200) && !this.state.isLoading && !this.props.isLoadingDone) {
       this.paginatedLoading();
     }
   }
@@ -74,9 +75,9 @@ class Films extends Component {
     makeRequest(url, 'GET')
       .then(result => {
         if (!result.length) {
-          this.setState({ isLoadingDone: true })
+          this.props.loadingDone();
         };
-        if (Object.keys(this.state.result).length === 0) {
+        if (!Object.keys(this.state.result).length) {
           this.setState({ result });
         } else {
           this.setState({ result: [...this.state.result, ...result] })

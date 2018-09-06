@@ -20,6 +20,14 @@ export const removeSearchValue = () => ({
   type: 'REMOVE_SEARCH_VALUE',
 })
 
+export const loadingDone = () => ({
+  type: 'LOADING_DONE',
+})
+
+export const loading = () => ({
+  type: 'LOADING',
+})
+
 export const changeSearchConditions = (sortType, sortValue) => ({
   type: 'CHANGE_SEARCH_CONDITIONS',
   sortType,

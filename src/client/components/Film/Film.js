@@ -45,6 +45,7 @@ class Film extends Component {
       comment: '',
       rateMessage: "Rate this film!",
       error: false,
+      isSendingComment: false,
     };
   }
 
@@ -103,22 +104,24 @@ class Film extends Component {
   }
 
   onCommentFieldKeyPress = (e) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && e.target.value) {
       this.sendComment();
     }
   }
 
   sendComment = () => {
-    if (this.props.token) {
-    const data = {
-      user_id: this.props.userId,
-      userName: this.props.userName,
-      text: this.state.comment,
-    };
-    makeRequest(`/api${history.location.pathname}/comment`, 'PUT', this.props.token, data)
-      .then(result => this.setState({ result, comment: '' }))
-      .catch(err => console.log(err))
-    } else {
+    if (this.props.token && !this.state.isSendingComment) {
+      this.setState({ isSendingComment: true }, () => {
+        const data = {
+          user_id: this.props.userId,
+          userName: this.props.userName,
+          text: this.state.comment,
+        };
+        makeRequest(`/api${history.location.pathname}/comment`, 'PUT', this.props.token, data)
+          .then(result => this.setState({ result, comment: '', isSendingComment: false }))
+          .catch(err => console.log(err))
+      });
+    } else if(!this.props.token) {
       history.push('/login');
     }
   }
@@ -185,7 +188,6 @@ class Film extends Component {
             enableImageSelection={false}
             rowHeight={180}
             maxRows={1}
-            // onClickThumbnail={function() {}}
           />
         </Paper>
         <Paper className={classes.paperComments}>
