@@ -48,6 +48,11 @@ const user = (state = initialState, action) => {
         sortType: action.sortType,
         sortValue: action.sortValue,
       }
+    case 'UPDATE_RATED_FILMS':
+      return {
+        ...state,
+        ratedFilms: action.ratedFilms,
+      }
     default:
       return state;
   }

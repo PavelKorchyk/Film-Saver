@@ -20,7 +20,7 @@ import StarRatings from 'react-star-ratings';
 import TextField from '@material-ui/core/TextField';
 import Send from '@material-ui/icons/Send';
 import Comments from './FilmCommentsView';
-import { element } from 'prop-types';
+import { updateRatedFilms } from '../../redux/actions/index';
 
 const mapStateToProps = store => ({ 
   token: store.user.token,
@@ -28,6 +28,12 @@ const mapStateToProps = store => ({
   userName: store.user.username,
   ratedFilms: store.user.ratedFilms,
 });
+
+const mapDispatchToProps = dispatch => {
+  return {
+    updateRatedFilms: (ratedFilms) => dispatch(updateRatedFilms(ratedFilms)),
+  };
+};
 
 class Film extends Component {
   constructor(props) {
@@ -49,7 +55,7 @@ class Film extends Component {
     .then(() => {
       const personalRating = this.props.ratedFilms.find(element => element.filmId == this.state.result._id)
       if (personalRating) {
-        this.setState({ personalRating: personalRating.rating })
+        this.setState({ personalRating: personalRating.rating, rateMessage: "Your rate!" })
       }
     })
     .catch(err => console.log(err));
@@ -57,7 +63,7 @@ class Film extends Component {
 
   componentDidUpdate(prevProps) {
     if (prevProps.token !== this.props.token) {
-      this.setState({ personalRating: '', comment: '' });
+      this.setState({ personalRating: '', comment: '', rateMessage: "Rate this film!" });
     }
   }
 
@@ -69,13 +75,13 @@ class Film extends Component {
       };
       this.setState({ personalRating: e }, () => 
         makeRequest(`/api/user/${this.props.userId}/rating`, 'PUT', this.props.token, data)
-        .then(result => {this.setState({ rateMessage: "Your rate!" }), console.log(result)})
+        .then(result => {this.setState({ rateMessage: "Your rate!" }), this.props.updateRatedFilms(result.ratedFilms)})
         .catch(err => console.log(err)));
 
       const newRating = ((this.state.rating + e) / 2).toFixed(2);
       this.setState({ rating: e }, () => 
         makeRequest(`/api${history.location.pathname}`, 'PUT', this.props.token, {"rating": newRating})
-        .then(result => {this.setState({ result, rating: result.rating }), console.log(result)})
+        .then(result => {this.setState({ result, rating: result.rating })})
         .catch(err => console.log(err)))
     } else if(!this.props.token) {
       history.push('/login');
@@ -211,4 +217,4 @@ class Film extends Component {
   }
 }
 
-export default connect (mapStateToProps, null)(withStyles(styles) (Film));
+export default connect (mapStateToProps, mapDispatchToProps)(withStyles(styles) (Film));

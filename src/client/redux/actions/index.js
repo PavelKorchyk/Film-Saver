@@ -25,3 +25,8 @@ export const changeSearchConditions = (sortType, sortValue) => ({
   sortType,
   sortValue
 })
+
+export const updateRatedFilms = (ratedFilms) => ({
+  type: 'UPDATE_RATED_FILMS',
+  ratedFilms
+})
