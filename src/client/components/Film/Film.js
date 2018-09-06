@@ -44,6 +44,7 @@ class Film extends Component {
       personalRating: '',
       comment: '',
       rateMessage: "Rate this film!",
+      error: false,
     };
   }
 
@@ -91,9 +92,13 @@ class Film extends Component {
   }
 
   onCommentFieldChange = (e) => {
-    this.setState({ comment: e.target.value });
-    if (e.key === "Enter") {
-      this.sendComment();
+    if (/^[a-z0-9!@#$%^&*()_+=:"',.?; -]*$/i.test(e.target.value) && e.target.value.length < 500) {
+      this.setState({ comment: e.target.value, error: false });
+      if (e.key === "Enter") {
+        this.sendComment();
+      }
+    } else {
+      this.setState({ error: true })
     }
   }
 
@@ -196,6 +201,7 @@ class Film extends Component {
                 className={classes.textField}
                 margin="normal"
                 multiline={false}
+                error={this.state.error}
                 value={this.state.comment}
                 onChange={this.onCommentFieldChange}
                 onKeyPress={this.onCommentFieldKeyPress}
