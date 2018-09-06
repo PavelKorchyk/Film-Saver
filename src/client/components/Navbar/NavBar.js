@@ -51,6 +51,7 @@ class NavBar extends Component {
   clearSearchValue = () => {
     this.setState({ searchValue: '' });
     this.props.removeSearchValue();
+    this.sortByDefault();
   }
 
   //SEARCH

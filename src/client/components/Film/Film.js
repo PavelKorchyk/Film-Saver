@@ -69,13 +69,13 @@ class Film extends Component {
       };
       this.setState({ personalRating: e }, () => 
         makeRequest(`/api/user/${this.props.userId}/rating`, 'PUT', this.props.token, data)
-        .then(result => this.setState({ ratedFilms: result.ratedFilms, rateMessage: "Your rate!" }))
+        .then(result => {this.setState({ rateMessage: "Your rate!" }), console.log(result)})
         .catch(err => console.log(err)));
 
-      const newRating = (this.state.rating + e) / 2;
+      const newRating = ((this.state.rating + e) / 2).toFixed(2);
       this.setState({ rating: e }, () => 
         makeRequest(`/api${history.location.pathname}`, 'PUT', this.props.token, {"rating": newRating})
-        .then(result => this.setState({ result, rating: result.rating }))
+        .then(result => {this.setState({ result, rating: result.rating }), console.log(result)})
         .catch(err => console.log(err)))
     } else if(!this.props.token) {
       history.push('/login');
@@ -85,7 +85,16 @@ class Film extends Component {
   }
 
   onCommentFieldChange = (e) => {
-    this.setState({ comment: e.target.value })
+    this.setState({ comment: e.target.value });
+    if (e.key === "Enter") {
+      this.sendComment();
+    }
+  }
+
+  onCommentFieldKeyPress = (e) => {
+    if (e.key === "Enter") {
+      this.sendComment();
+    }
   }
 
   sendComment = () => {
@@ -180,9 +189,10 @@ class Film extends Component {
                 placeholder={this.props.token ? "Your comment goes here..." : "You should login first..."}
                 className={classes.textField}
                 margin="normal"
-                multiline={true}
+                multiline={false}
                 value={this.state.comment}
                 onChange={this.onCommentFieldChange}
+                onKeyPress={this.onCommentFieldKeyPress}
                 disabled={!this.props.token}
               />
               <Send color={"primary"} className={classes.button} onClick={this.sendComment}/>
