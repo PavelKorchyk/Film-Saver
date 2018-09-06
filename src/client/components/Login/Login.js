@@ -19,9 +19,6 @@ const mapDispatchToProps = dispatch => {
 };
 
 const mapStateToProps = (store) => {
-  if (store.user.token) {
-    history.replace('/');
-  }
   return {token: store.user.token};
 };
 
@@ -33,6 +30,12 @@ class Login extends Component {
       password: '',
       signInButtonColor: "primary",
       errors: '',
+    }
+  }
+
+  componentDidUpdate() {
+    if (this.props.token) {
+      history.replace('/');
     }
   }
 

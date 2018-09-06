@@ -30,7 +30,7 @@ class Login extends Component {
     };
   }
 
-  componentDidMount() {
+  componentDidUpdate() {
     if (this.props.token) {
       history.replace('/');
     }
