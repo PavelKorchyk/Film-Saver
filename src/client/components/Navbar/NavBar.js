@@ -31,6 +31,7 @@ const mapStateToProps = store => {
   return {
     token: store.user.token,
     searchValue: store.user.searchValue,
+    userName: store.user.username,
   };
 };
 
@@ -121,6 +122,7 @@ class NavBar extends Component {
                   Films Saver
                 </Typography>
               </Button>
+              <div>{this.props.userName ? `for ${this.props.userName}`: null}</div>
               <div className={classes.flex}></div>
               <React.Fragment>
                 <Button 
