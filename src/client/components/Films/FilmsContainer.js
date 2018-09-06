@@ -73,7 +73,7 @@ class Films extends Component {
     const url = this.createUrl();
     makeRequest(url, 'GET')
       .then(result => {
-        if (result.length === 0) {
+        if (!result.length) {
           this.setState({ isLoadingDone: true })
         };
         if (Object.keys(this.state.result).length === 0) {

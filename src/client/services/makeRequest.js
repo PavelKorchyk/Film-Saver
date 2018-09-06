@@ -1,7 +1,6 @@
 const history = require('./history');
 
 const makeRequest = (url, method, token, data ) => {
-  console.log(url)
   let headers = new Headers();
   headers.set("Authorization", `JWT ${token}`);
   headers.set("Content-Type", "application/json");

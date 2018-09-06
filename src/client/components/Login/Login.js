@@ -60,13 +60,12 @@ class Login extends Component {
         }
       })
       .then(response => {
-        if(response.token) {
+        if(response.token) { 
           this.props.logIn(response);
           history.replace('/');
         }
       })
       .catch(error => {
-        console.error('Error:', error);
         this.setState({ signInButtonColor: "secondary" });
       });
     }

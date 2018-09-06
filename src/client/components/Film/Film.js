@@ -92,7 +92,7 @@ class Film extends Component {
   }
 
   onCommentFieldChange = (e) => {
-    if (/^[a-z0-9!@#$%^&*()_+=:"',.?; -]*$/i.test(e.target.value) && e.target.value.length < 500) {
+    if (/^[a-z0-9!@#$%^&*()_+=:"',.?;<> -]*$/i.test(e.target.value) && e.target.value.length < 500) {
       this.setState({ comment: e.target.value, error: false });
       if (e.key === "Enter") {
         this.sendComment();
@@ -185,6 +185,7 @@ class Film extends Component {
             enableImageSelection={false}
             rowHeight={180}
             maxRows={1}
+            // onClickThumbnail={function() {}}
           />
         </Paper>
         <Paper className={classes.paperComments}>

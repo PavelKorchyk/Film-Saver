@@ -16,7 +16,6 @@ router
     const wayToSort = {
       [req.query.sortType]: req.query.sortValue
     }
-    console.log("Query:", req.query)
     Films
       .find({ title: (new RegExp(req.query.title, "i")) }, null, {      
         skip: Number(req.query.offset) || DEFAULT_QUERY_FILMS_OFFSET, 
@@ -24,9 +23,6 @@ router
         sort: wayToSort
       })
       .then(result => {
-        if (result.length === 0) {
-          throw new Error('no data fund');
-        }
         res.status(200).json(result);
       })
       .catch(err => {
@@ -90,7 +86,6 @@ router
 
   .put('/:id/comment', passport.authenticate('jwt', { session: false }), dataValidation(putFilmsSchema),
   (req, res, next) => {
-    console.log(req.body);
     Films.findByIdAndUpdate(req.params.id, {$push: { comments: req.body }}, { new: true })
       .exec()
       .then(result => {
