@@ -7,10 +7,9 @@ const bcrypt = require('bcrypt');
 //Bring in User Model
 const User = require('../../../models/user');
 
-//Register Form
-router.get('/', (req, res, next) => {
+router.get('/:id', (req, res, next) => {
   User
-  .find({})
+  .findOne({ _id: req.params.id })
   .then(result => {
     if (result.length === 0) {
       throw new Error('no data fund');
@@ -21,8 +20,9 @@ router.get('/', (req, res, next) => {
     res.status(500).json({error: err});
   })
 })
-router.put('/:id', (req, res, next) => {
-  User.findByIdAndUpdate(req.params.id, req.body, { new: true })
+
+router.put('/:id/rating', (req, res, next) => {
+  User.findByIdAndUpdate(req.params.id, {$push: { ratedFilms: req.body }}, { new: true,  })
     .populate('films')
     .exec()
     .then(result => {
@@ -36,6 +36,8 @@ router.put('/:id', (req, res, next) => {
       res.status(500).json({ error: err});
     });
 })
+
+//Register Form
 router.post('/signup', (req, res, next) => {
   if (
     validator.isEmail(req.body.email) &&

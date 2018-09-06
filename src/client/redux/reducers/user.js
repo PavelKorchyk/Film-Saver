@@ -7,6 +7,7 @@ const initialState = {
   searchValue: '',
   sortType: '$natural',
   sortValue: '1',
+  ratedFilms: [],
 }
 
 const user = (state = initialState, action) => {
@@ -19,14 +20,17 @@ const user = (state = initialState, action) => {
         username: action.username,
         token: action.token,
         isLogedIn: true,
+        ratedFilms: action.ratedFilms,
       }
     case 'LOGOUT':
       return {
         ...state,
         email: null,
+        userId: null,
         username: null,
         token: null,
         isLogedIn: false,
+        ratedFilms: [],
       }
     case 'ADD_SEARCH_VALUE':
       return {

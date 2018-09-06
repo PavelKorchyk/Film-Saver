@@ -20,42 +20,76 @@ import StarRatings from 'react-star-ratings';
 import TextField from '@material-ui/core/TextField';
 import Send from '@material-ui/icons/Send';
 import Comments from './FilmCommentsView';
+import { element } from 'prop-types';
 
 const mapStateToProps = store => ({ 
   token: store.user.token,
   userId: store.user.userId, 
   userName: store.user.username,
+  ratedFilms: store.user.ratedFilms,
 });
 
 class Film extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      result: [],
+      result: '',
       rating: '',
-      comment: ''
+      personalRating: '',
+      comment: '',
+      rateMessage: "Rate this film!",
     };
   }
 
   componentDidMount() {
-    makeRequest(`/api${history.location.pathname}`, 'GET').then(result => this.setState({ result, rating: result.rating }));
+    makeRequest(`/api${history.location.pathname}`, 'GET')
+    .then(result => {
+      this.setState({ result, rating: result.rating })
+    })
+    .then(() => {
+      const personalRating = this.props.ratedFilms.find(element => element.filmId == this.state.result._id)
+      if (personalRating) {
+        this.setState({ personalRating: personalRating.rating })
+      }
+    })
+    .catch(err => console.log(err));
+  }
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.token !== this.props.token) {
+      this.setState({ personalRating: '', comment: '' });
+    }
   }
 
   changeRating = (e) => {
-    const data = {
-      rating: e,
-    };
-    this.setState({ rating: e }, () => 
-      makeRequest(`/api${history.location.pathname}`, 'PUT', this.props.token, data)
-      .then(result => this.setState({ result, rating: result.rating }))
-      .catch(err => console.log(err))
-  )}
+    if (this.props.token && !this.state.personalRating) {
+      const data = {
+        filmId: this.state.result._id,
+        rating: e,
+      };
+      this.setState({ personalRating: e }, () => 
+        makeRequest(`/api/user/${this.props.userId}/rating`, 'PUT', this.props.token, data)
+        .then(result => this.setState({ ratedFilms: result.ratedFilms, rateMessage: "Your rate!" }))
+        .catch(err => console.log(err)));
+
+      const newRating = (this.state.rating + e) / 2;
+      this.setState({ rating: e }, () => 
+        makeRequest(`/api${history.location.pathname}`, 'PUT', this.props.token, {"rating": newRating})
+        .then(result => this.setState({ result, rating: result.rating }))
+        .catch(err => console.log(err)))
+    } else if(!this.props.token) {
+      history.push('/login');
+    } else {
+      this.setState({ rateMessage: "You've rated this film" })
+    }
+  }
 
   onCommentFieldChange = (e) => {
     this.setState({ comment: e.target.value })
   }
 
   sendComment = () => {
+    if (this.props.token) {
     const data = {
       user_id: this.props.userId,
       userName: this.props.userName,
@@ -64,6 +98,9 @@ class Film extends Component {
     makeRequest(`/api${history.location.pathname}/comment`, 'PUT', this.props.token, data)
       .then(result => this.setState({ result, comment: '' }))
       .catch(err => console.log(err))
+    } else {
+      history.push('/login');
+    }
   }
 
   filmRender() {
@@ -96,7 +133,7 @@ class Film extends Component {
                     <Avatar>
                       <StarRate />
                     </Avatar>
-                    <ListItemText primary="Rating" secondary={film.rating} />
+                    <ListItemText primary="Rating" secondary={this.state.rating} />
                   </ListItem>
                   <Divider inset component="li" />
                   <ListItem>
@@ -110,10 +147,10 @@ class Film extends Component {
             </div>
             <div className={classes.rating}>
               <Typography variant="headline" className={classes.typographyh2}>
-                Rate this film!
+                {this.state.rateMessage}
               </Typography>
               <StarRatings
-                rating={this.state.rating}
+                rating={ this.state.personalRating || this.state.rating }
                 starRatedColor="blue"
                 changeRating={this.changeRating}
                 numberOfStars={5}
@@ -140,7 +177,7 @@ class Film extends Component {
             <div className={classes.commentField}>
               <TextField
                 id="comment-input"
-                placeholder="Your comment goes here..."
+                placeholder={this.props.token ? "Your comment goes here..." : "You should login first..."}
                 className={classes.textField}
                 margin="normal"
                 multiline={true}

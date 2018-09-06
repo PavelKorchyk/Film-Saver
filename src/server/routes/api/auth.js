@@ -26,7 +26,14 @@ router.post('/login', (req, res, next) => {
       .then(user => {
         const payload = { email: user.email, password: user.password };
         const token = jwt.sign(payload, config.secretOrKey);
-        res.json({ message: "ok", token: token, username: user.username, email: user.email, _id: user._id }); 
+        res.json({ 
+          message: "ok", 
+          token: token, 
+          username: user.username, 
+          email: user.email, 
+          _id: user._id,
+          ratedFilms: user.ratedFilms,
+        }); 
       })
       .catch(err => console.log(err));
   }  

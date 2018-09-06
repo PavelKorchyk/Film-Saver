@@ -4,6 +4,7 @@ export const logIn = user => ({
   email: user.email,
   username: user.username,
   token: user.token,
+  ratedFilms: user.ratedFilms,
 });
 
 export const logOut = () => ({
