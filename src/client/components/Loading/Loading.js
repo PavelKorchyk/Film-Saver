@@ -8,7 +8,7 @@ function Loading(props) {
     <div className={classes.wrapper}>
       <img src={'https://upload.wikimedia.org/wikipedia/commons/6/63/Elipsis.gif'} alt="" className={classes.elipsis} />
     </div>
-  )
+  );
 }
 
 export default withStyles(styles) (Loading);

@@ -10,9 +10,8 @@ import styles from './styles';
 
 class FilmsView extends Component {
   render() {
-  const { classes } = this.props;
-  const { films } = this.props;
-  if (!this.props.films) {
+  const { classes, films } = this.props;
+  if (!films) {
     return <div className={classes.wrapper}>
       <img src={"https://upload.wikimedia.org/wikipedia/commons/6/63/Elipsis.gif"} alt="" className={classes.elipsis} />
     </div>
@@ -49,4 +48,4 @@ class FilmsView extends Component {
   }
 }
 
-export default withStyles(styles) (FilmsView)
+export default withStyles(styles) (FilmsView);

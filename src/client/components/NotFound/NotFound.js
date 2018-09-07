@@ -8,7 +8,7 @@ class NotFound extends Component {
       <div className={classes.wrapper}>
         <img src={require("../../../../public/404.png")} alt="" className={classes.notFound} />
       </div>
-    )
+    );
   }
 }
 

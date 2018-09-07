@@ -1,53 +1,53 @@
-const styles = theme => ({
+const styles = () => ({
   list: {
-    "max-width": "500px"
+    maxWidth: 500,
   },
   card: {
     maxWidth: 345,
-    margin: "10px",
+    margin: 10,
   },
   media: {
-    objectFit: 'cover',
+    objectFit: "cover",
   },
   paper: {
-    "max-width": "1024px",
-    "margin": "20px auto 5px auto",
-    "display": "flex",
-    "flex-direction": "row",
-    "flex-wrap": "wrap",
-    "justify-content": "space-around",
-    "align-items": "flex-start",
-    "align-content": "flex-start",
+    maxWidth: 1024,
+    margin: "20px auto 5px auto",
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+    alignItems: "flex-start",
+    alignContent: "flex-start",
   },
   imgGallery: {
     display: "block",
-    minHeight: "1px",
-    maxHeight: "180px",
+    minHeight: 1,
+    maxHeight: 180,
     width: "100%",
     border: "1px solid #ddd",
-    "overflow-y": "hidden",
-    "overflow-x": "auto",
-    "margin": "0px auto",
-    "max-width": "1024px",
+    overflowY: "hidden",
+    overflowX: "auto",
+    margin: "0px auto",
+    maxWidth: 1024,
   },
   avatar: {
-    "max-width": "300px",
+    maxWidth: 300,
   },
   wrapper: {
-    "margin": "20px",
-    "display": "flex",
-    "flex-direction": "column",
-    "flex-wrap": "wrap",
-    "justify-content": "flex-start",
-    "align-items": "flex-start",
-    "align-content": "flex-start",
+    margin: 20,
+    display: "flex",
+    flexDirection: "column",
+    flexWrap: "wrap",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    alignContent: "flex-start",
   },
   typography: {
-    "display": "block",
-    "margin": "0 auto",
+    display: "block",
+    margin: "0 auto",
   },
   elipsis: {
-    "align-self": "center",
+    alignSelf: "center",
   }
 });
 

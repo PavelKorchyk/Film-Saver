@@ -37,37 +37,34 @@ class Login extends Component {
   }
 
   onFieldChange = (e) => {
+    const { password, email, username, passwordConfirmation } = this.state;
     this.setState({[e.target.id]: e.target.value}, () => {
       const errors = {
-        password: this.state.password,
-        email: this.state.email,
-        username: this.state.username,
-        passwordConfirmation: this.state.passwordConfirmation,
-      }
+        password: password,
+        email: email,
+        username: username,
+        passwordConfirmation: passwordConfirmation,
+      };
       this.setState({ errors: validate(errors) });
     });
   }
 
   handleSubmit = () => {
-    if (
-      !this.state.email &&
-      !this.state.username &&
-      !this.state.password &&
-      !this.state.passwordConfirmation
-    ) {
+    const { email, username, password, passwordConfirmation, numOfSignUpAttempts, errors } = this.state;
+    if (!email && !username && !password && !passwordConfirmation) {
       this.setState({ signUpButtonColor: "secondary" });
     } else {
-      this.setState({ numOfSignUpAttempts: this.state.numOfSignUpAttempts + 1 });
-      if (this.state.numOfSignUpAttempts > 0 && this.state.errors) {
+      this.setState({ numOfSignUpAttempts: numOfSignUpAttempts + 1 });
+      if (numOfSignUpAttempts > 0 && errors) {
         this.setState({ signUpButtonColor: "secondary" });
       }
-      if (Object.keys(this.state.errors).length === 0) {
+      if (Object.keys(errors).length === 0) {
         const url = 'api/user/signup';
         const method = 'POST';
         const data = {
-          email: this.state.email,
-          username: this.state.username,
-          password: this.state.password,
+          email: email,
+          username: username,
+          password: password,
         };
         makeRequest(url, method, null, data)
         .then(response => {
@@ -84,6 +81,7 @@ class Login extends Component {
 
   render() {
     const { classes } = this.props;
+    const { email, username, password, passwordConfirmation, errors, numOfSignUpAttempts, signUpButtonColor } = this.state;
     return (
       <form className={classes.root}>
         <Paper className={classes.paper} elevation={3}>
@@ -95,9 +93,9 @@ class Login extends Component {
             className={classes.textField}
             margin="normal"
             onChange={this.onFieldChange}
-            value={this.state.email}
+            value={email}
           />
-          <ErrorMessage error={this.state.errors.email} condition={this.state.numOfSignUpAttempts > 0} />
+          <ErrorMessage error={errors.email} condition={numOfSignUpAttempts > 0} />
           <TextField
             id="username"
             label="User Name"
@@ -105,9 +103,9 @@ class Login extends Component {
             className={classes.textField}
             margin="normal"
             onChange={this.onFieldChange}
-            value={this.state.username}
+            value={username}
           />
-          <ErrorMessage error={this.state.errors.username} condition={this.state.numOfSignUpAttempts > 0} />
+          <ErrorMessage error={errors.username} condition={numOfSignUpAttempts > 0} />
           <TextField
             id="password"
             label="Password"
@@ -115,9 +113,9 @@ class Login extends Component {
             type="password"
             margin="normal"
             onChange={this.onFieldChange}
-            value={this.state.password}
+            value={password}
           />
-          <ErrorMessage error={this.state.errors.password} condition={this.state.numOfSignUpAttempts > 0} />
+          <ErrorMessage error={errors.password} condition={numOfSignUpAttempts > 0} />
           <TextField
             id="passwordConfirmation"
             label="Confirm password"
@@ -125,10 +123,10 @@ class Login extends Component {
             type="password"
             margin="normal"
             onChange={this.onFieldChange}
-            value={this.state.passwordConfirmation}
+            value={passwordConfirmation}
           />
-          <ErrorMessage error={this.state.errors.passwordConfirmation} condition={this.state.numOfSignUpAttempts > 0} />
-          <Button onClick={this.handleSubmit} variant="outlined" color={this.state.signUpButtonColor} className={classes.button}>
+          <ErrorMessage error={errors.passwordConfirmation} condition={numOfSignUpAttempts > 0} />
+          <Button onClick={this.handleSubmit} variant="outlined" color={signUpButtonColor} className={classes.button}>
             SignUp
           </Button>
           <Button variant="outlined" className={classes.button} component={Link} to='/login'>
@@ -136,7 +134,7 @@ class Login extends Component {
           </Button>
         </Paper>
       </form>
-    )
+    );
   }
 }
 

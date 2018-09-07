@@ -30,6 +30,7 @@ class Genre extends Component {
       .then(result => this.setState({ result }))
       .then(() => this.addFilmsToRender())
       .then(() => window.addEventListener('scroll', this.onScroll, false))
+      .catch(err => console.log(err));
   }
 
   onScroll = () => {
@@ -39,11 +40,11 @@ class Genre extends Component {
   }
 
   addFilmsToRender = () => {
-      
-      let prevFilmsToRender = this.state.filmsToRender;
-      let newFilmsToRender = this.state.result.films.slice(this.state.skip, this.state.skip + this.state.limit);
-      let filmsToRender = prevFilmsToRender.concat(newFilmsToRender);
-      this.setState({ filmsToRender, skip: this.state.skip + this.state.limit })
+    const { filmsToRender, result, skip, limit } = this.state;
+    let prevFilmsToRender = filmsToRender;
+    let newFilmsToRender = result.films.slice(skip, skip + limit);
+    let allfilmsToRender = prevFilmsToRender.concat(newFilmsToRender);
+    this.setState({ filmsToRender: allfilmsToRender, skip: skip + limit })
   }
 
   componentWillUnmount() {
@@ -52,7 +53,8 @@ class Genre extends Component {
 
   genreRender() {
     const { classes } = this.props;
-    const genre = this.state.result;
+    const { result, filmsToRender } = this.state;
+    const genre = result;
     return <div className={classes.root}>
         <Paper className={classes.paper}>
           <div className={classes.wrapper}>
@@ -73,7 +75,7 @@ class Genre extends Component {
             </div>
           </div>
         </Paper>
-        <FilmsView films={this.state.filmsToRender}/>
+        <FilmsView films={filmsToRender}/>
       </div>
   }
   

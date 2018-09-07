@@ -9,7 +9,7 @@ const initialState = {
   sortType: '$natural',
   sortValue: '1',
   ratedFilms: [],
-}
+};
 
 const user = (state = initialState, action) => {
   switch (action.type) {

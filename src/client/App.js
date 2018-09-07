@@ -22,7 +22,7 @@ const App = () => {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <Router history={history}>
-          <div>
+          <React.Fragment>
             <NavBar />
             <Switch>
               <Route exact path='/'component={Films}/>
@@ -35,7 +35,7 @@ const App = () => {
               <Route exact path='/signup'component={SignUp}/>
               <Redirect to='/404' />
             </Switch>
-          </div>
+          </React.Fragment>
         </Router>
       </PersistGate>
     </Provider>

@@ -1,7 +1,7 @@
-const styles = theme => ({
+const styles = () => ({
   error: {
-    "color": "red",
-    "margin": "0 auto", 
+    color: "red",
+    margin: "0 auto", 
   },
 });
 

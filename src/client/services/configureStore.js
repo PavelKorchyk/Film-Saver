@@ -8,7 +8,7 @@ import rootReducer from '../redux/reducers/index';
 const persistConfig = {
   key: 'root',
   storage,
-}
+};
  
 const persistedReducer = persistReducer(
   persistConfig, 
@@ -18,8 +18,8 @@ const persistedReducer = persistReducer(
 export default () => {
   let store = createStore(
     persistedReducer, 
-    composeWithDevTools(applyMiddleware())
+    composeWithDevTools(applyMiddleware()),
   );
-  let persistor = persistStore(store)
+  let persistor = persistStore(store);
   return { store, persistor }
 }

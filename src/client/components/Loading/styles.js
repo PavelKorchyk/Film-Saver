@@ -1,11 +1,11 @@
-const styles = theme => ({
+const styles = () => ({
   wrapper: {
-    "margin": "200px",
-    "display": "flex",
-    "justify-content": "center",
+    margin: 200,
+    display: "flex",
+    justifyContent: "center",
   },
   elipsis: {
-    "align-self": "center",
+    alignSelf: "center",
   }
 });
 

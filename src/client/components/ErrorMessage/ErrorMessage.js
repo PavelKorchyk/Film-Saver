@@ -3,10 +3,6 @@ import { withStyles } from '@material-ui/core/styles';
 import styles from './styles';
 
 class ErrorMessage extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   shouldDisplayError(condition, error) {
     if (condition) {
       return error;
@@ -16,12 +12,12 @@ class ErrorMessage extends Component {
   }
   
   render() {
-    const { classes } = this.props;
+    const { classes, condition, error } = this.props;
     return (
       <div className={classes.error}>
-        {this.shouldDisplayError(this.props.condition, this.props.error)}
+        {this.shouldDisplayError(condition, error)}
       </div>
-    )
+    );
   }
 }
 

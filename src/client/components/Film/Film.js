@@ -52,15 +52,15 @@ class Film extends Component {
   componentDidMount() {
     makeRequest(`/api${history.location.pathname}`, 'GET')
     .then(result => {
-      this.setState({ result, rating: result.rating })
+      this.setState({ result, rating: result.rating });
     })
     .then(() => {
-      const personalRating = this.props.ratedFilms.find(element => element.filmId == this.state.result._id)
+      const personalRating = this.props.ratedFilms.find(element => element.filmId == this.state.result._id);
       if (personalRating) {
         this.setState({ personalRating: personalRating.rating, rateMessage: "Your rate!" })
       }
     })
-    .catch(err => null);
+    .catch(err => console.log(err));
   }
 
   componentDidUpdate(prevProps) {
@@ -70,25 +70,31 @@ class Film extends Component {
   }
 
   changeRating = (e) => {
-    if (this.props.token && !this.state.personalRating) {
+    const { token, userId, updateRatedFilms } = this.props;
+    const { rating, personalRating, result } = this.state;
+
+    if (token && !personalRating) {
       const data = {
-        filmId: this.state.result._id,
+        filmId: result._id,
         rating: e,
       };
-      this.setState({ personalRating: e }, () => 
-        makeRequest(`/api/user/${this.props.userId}/rating`, 'PUT', this.props.token, data)
-        .then(result => {this.setState({ rateMessage: "Your rate!" }), this.props.updateRatedFilms(result.ratedFilms)})
-        .catch(err => null));
 
-      const newRating = ((this.state.rating + e) / 2).toFixed(2);
+      this.setState({ personalRating: e }, () => 
+        makeRequest(`/api/user/${userId}/rating`, 'PUT', token, data)
+        .then(result => {this.setState({ rateMessage: "Your rate!" }), updateRatedFilms(result.ratedFilms)})
+        .catch(err => console.log(err)));
+
+      const newRating = ((rating + e) / 2).toFixed(2);
+
       this.setState({ rating: e }, () => 
-        makeRequest(`/api${history.location.pathname}`, 'PUT', this.props.token, {"rating": newRating})
+        makeRequest(`/api${history.location.pathname}`, 'PUT', token, {"rating": newRating})
         .then(result => {this.setState({ result, rating: result.rating })})
-        .catch(err => null))
-    } else if(!this.props.token) {
+        .catch(err => console.log(err)));
+        
+    } else if(!token) {
       history.push('/login');
     } else {
-      this.setState({ rateMessage: "You've rated this film" })
+      this.setState({ rateMessage: "You've rated this film" });
     }
   }
 
@@ -99,7 +105,7 @@ class Film extends Component {
         this.sendComment();
       }
     } else {
-      this.setState({ error: true })
+      this.setState({ error: true });
     }
   }
 
@@ -109,26 +115,31 @@ class Film extends Component {
     }
   }
 
-  sendComment = (e) => {
-    if (this.props.token && !this.state.isSendingComment && this.state.comment) {
+  sendComment = () => {
+    const { token, userId, userName } = this.props;
+    const { isSendingComment, comment } = this.state;
+
+    if (token && !isSendingComment && comment) {
       this.setState({ isSendingComment: true }, () => {
         const data = {
-          user_id: this.props.userId,
-          userName: this.props.userName,
-          text: this.state.comment,
+          user_id: userId,
+          userName: userName,
+          text: comment,
         };
-        makeRequest(`/api${history.location.pathname}/comment`, 'PUT', this.props.token, data)
+        makeRequest(`/api${history.location.pathname}/comment`, 'PUT', token, data)
           .then(result => this.setState({ result, comment: '', isSendingComment: false }))
-          .catch(err => null)
+          .catch(err => console.log(err));
       });
-    } else if(!this.props.token) {
+    } else if(!token) {
       history.push('/login');
     }
   }
 
   filmRender() {
-    const { classes } = this.props;
-    const film = this.state.result;
+    const { classes, token } = this.props;
+    const { rating, personalRating, result, rateMessage, error, comment } = this.state;
+    const film = result;
+    
     const images = film.gallery.map(url => {
       return { src: url, thumbnail: url, thumbnailWidth: 150,
         thumbnailHeight: 100, }
@@ -156,7 +167,7 @@ class Film extends Component {
                     <Avatar>
                       <StarRate />
                     </Avatar>
-                    <ListItemText primary="Rating" secondary={this.state.rating} />
+                    <ListItemText primary="Rating" secondary={rating} />
                   </ListItem>
                   <Divider inset component="li" />
                   <ListItem>
@@ -170,10 +181,10 @@ class Film extends Component {
             </div>
             <div className={classes.rating}>
               <Typography variant="headline" className={classes.typographyh2}>
-                {this.state.rateMessage}
+                {rateMessage}
               </Typography>
               <StarRatings
-                rating={ this.state.personalRating || this.state.rating }
+                rating={ personalRating || rating }
                 starRatedColor="blue"
                 changeRating={this.changeRating}
                 numberOfStars={5}
@@ -200,15 +211,15 @@ class Film extends Component {
             <div className={classes.commentField}>
               <TextField
                 id="comment-input"
-                placeholder={this.props.token ? "Your comment goes here..." : "You should login first..."}
+                placeholder={token ? "Your comment goes here..." : "You should login first..."}
                 className={classes.textField}
                 margin="normal"
                 multiline={false}
-                error={this.state.error}
-                value={this.state.comment}
+                error={error}
+                value={comment}
                 onChange={this.onCommentFieldChange}
                 onKeyPress={this.onCommentFieldKeyPress}
-                disabled={!this.props.token}
+                disabled={!token}
               />
               <Send color={"primary"} className={classes.button} onClick={this.sendComment}/>
             </div>

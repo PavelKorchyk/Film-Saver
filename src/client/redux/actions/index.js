@@ -9,32 +9,32 @@ export const logIn = (user) => ({
 
 export const logOut = () => ({
   type: 'LOGOUT',
-})
+});
 
 export const addSearchValue = (searchValue) => ({
   type: 'ADD_SEARCH_VALUE',
-  searchValue
-})
+  searchValue,
+});
 
 export const removeSearchValue = () => ({
   type: 'REMOVE_SEARCH_VALUE',
-})
+});
 
 export const loadingDone = () => ({
   type: 'LOADING_DONE',
-})
+});
 
 export const loading = () => ({
   type: 'LOADING',
-})
+});
 
 export const changeSearchConditions = (sortType, sortValue) => ({
   type: 'CHANGE_SEARCH_CONDITIONS',
   sortType,
-  sortValue
-})
+  sortValue,
+});
 
 export const updateRatedFilms = (ratedFilms) => ({
   type: 'UPDATE_RATED_FILMS',
-  ratedFilms
-})
+  ratedFilms,
+});

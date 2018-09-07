@@ -1,26 +1,26 @@
-const styles = theme => ({
+const styles = () => ({
   root: {
-    "margin-top": "10px",
+    marginTop: 10,
   },
   card: {
     maxWidth: 345,
-    margin: "10px",
+    margin: 10,
   },
   media: {
     objectFit: 'cover',
   },
   paper: {
-    "display": "flex",
-    "flex-wrap": "wrap",
-    "justify-content": "center"
+    display: "flex",
+    flexWrap: "wrap",
+    justifyContent: "center"
   },
   wrapper: {
-    "margin": "200px",
-    "display": "flex",
-    "justify-content": "center",
+    margin: 200,
+    display: "flex",
+    justifyContent: "center",
   },
   elipsis: {
-    "align-self": "center",
+    alignSelf: "center",
   }
 });
 

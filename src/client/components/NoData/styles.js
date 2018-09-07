@@ -1,12 +1,12 @@
-const styles = theme => ({
+const styles = () => ({
   wrapper: {
-    "margin": "100px",
-    "display": "flex",
-    "justify-content": "center",
+    margin: 100,
+    display: "flex",
+    justifyContent: "center",
   },
   notFound: {
-    "align-self": "center",
-    "width": "150%",
+    alignSelf: "center",
+    width: "150%",
   }
 });
 

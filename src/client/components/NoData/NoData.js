@@ -9,7 +9,7 @@ class NoData extends Component {
       <div className={classes.wrapper}>
         <img src={require("../../../../public/nodata.png")} alt="" className={classes.notFound} />
       </div>
-    )
+    );
   }
 }
 

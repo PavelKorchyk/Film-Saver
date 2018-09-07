@@ -31,7 +31,7 @@ class Films extends Component {
       isLoading: false,
       offset: 0,
       error: false,
-    }
+    };
   }
  
   componentDidMount() {
@@ -40,7 +40,8 @@ class Films extends Component {
   }
 
   componentDidUpdate(prevProps) {
-    if (prevProps.searchValue !== this.props.searchValue || prevProps.sortType !== this.props.sortType || prevProps.sortValue !== this.props.sortValue) {
+    const { searchValue, sortType, sortValue } = this.props;
+    if (prevProps.searchValue !== searchValue || prevProps.sortType !== sortType || prevProps.sortValue !== sortValue) {
       this.setState({ result: [], offset: 0 }, () => this.paginatedLoading());
     }
   }
@@ -57,16 +58,18 @@ class Films extends Component {
   }
 
   createUrl = () => {
+    const { searchValue, sortType, sortValue } = this.props;
+    const { offset } = this.state;
     let url;
-    if (this.props.searchValue) {
-      url = `/api/films/?title=${this.props.searchValue}&offset=${this.state.offset}&sortType=${this.props.sortType}&sortValue=${this.props.sortValue}`;
+    if (searchValue) {
+      url = `/api/films/?title=${searchValue}&offset=${offset}&sortType=${sortType}&sortValue=${sortValue}`;
     } else {
-      url = `/api/films/?offset=${this.state.offset}&sortType=${this.props.sortType}&sortValue=${this.props.sortValue}`;
+      url = `/api/films/?offset=${offset}&sortType=${sortType}&sortValue=${sortValue}`;
     }
-    return url
+    return url;
   }
 
-  paginatedLoading =() => {
+  paginatedLoading = () => {
     this.setState({ isLoading: true });
     const url = this.createUrl();
     makeRequest(url, 'GET')
@@ -77,7 +80,7 @@ class Films extends Component {
         if (!Object.keys(this.state.result).length) {
           this.setState({ result });
         } else {
-          this.setState({ result: [...this.state.result, ...result] })
+          this.setState({ result: [...this.state.result, ...result] });
         }
       })
       .then(() => this.setState({ offset: this.state.offset + 10, isLoading: false }))
@@ -93,7 +96,7 @@ class Films extends Component {
     if (!Object.keys(this.state.result).length) {
       return <Loading />
     }
-    return <FilmsView films={this.state.result}/>;
+    return <FilmsView films={this.state.result}/>
   }
 }
 

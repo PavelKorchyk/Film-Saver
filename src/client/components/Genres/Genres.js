@@ -20,11 +20,11 @@ class Genres extends Component {
     super(props);
     this.state = {
       result: [],
-    }
+    };
   }
 
   componentDidMount() {
-    makeRequest('/api/film/categories/', 'GET').then(result => this.setState({ result }))
+    makeRequest('/api/film/categories/', 'GET').then(result => this.setState({ result }));
   }
   
   genresRender() {

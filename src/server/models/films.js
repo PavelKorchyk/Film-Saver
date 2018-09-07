@@ -15,7 +15,7 @@ const FilmsSchema = Schema({
       userName: String,
       text: String,
       },
-    ]
+    ],
 });
 
 module.exports = mongoose.model('Films', FilmsSchema);

@@ -44,7 +44,7 @@ class NavBar extends Component {
       isSortOpen: false,
       anchorEl: null,
       searchValue: '',
-    }
+    };
   }
 
   logOut = () => {
@@ -60,7 +60,7 @@ class NavBar extends Component {
 
   //SEARCH
   onTextChange = (e) => {
-    this.setState({ searchValue: e.target.value })    
+    this.setState({ searchValue: e.target.value });   
     if (e.key === "Enter") {
       this.search();
     }
@@ -71,7 +71,7 @@ class NavBar extends Component {
     this.props.loading();
     history.push({
       pathname: '/',
-    })
+    });
   }
 
   //SORT
@@ -82,17 +82,17 @@ class NavBar extends Component {
       isSortOpen: !state.isSortOpen,
       anchorEl: event.target
     }));
-  };
+  }
 
   handleClickAway = () => {
     this.setState({
       isSortOpen: false,
     });
-  };
+  }
 
   handleClose = () => {
     this.setState({ anchorEl: null });
-  };
+  }
 
   sortByDefault = () => {
     this.props.changeSearchConditions('$natural', "1");
@@ -119,7 +119,7 @@ class NavBar extends Component {
   }
 
   render() {
-    const { classes } = this.props;
+    const { classes, userName, toggleSearch, token } = this.props;
     return (
       <div className={classes.root}>
         <ClickAwayListener onClickAway={this.handleClickAway}>
@@ -130,7 +130,7 @@ class NavBar extends Component {
                   Films Saver
                 </Typography>
               </Button>
-              <div>{this.props.userName ? `for ${this.props.userName}`: null}</div>
+              <div>{userName ? `for ${userName}`: null}</div>
               <div className={classes.flex}></div>
               <React.Fragment>
                 <Button 
@@ -161,12 +161,12 @@ class NavBar extends Component {
                   },
                 }}
               />
-              <Button color="inherit" onClick={this.props.toggleSearch}>
+              <Button color="inherit" onClick={toggleSearch}>
                 <Search />
               </Button>
               <Button color="inherit" onClick={this.clearSearchValue} component={Link} to='/'>Films</Button>
               <Button color="inherit" onClick={this.clearSearchValue}  component={Link} to='/genres'>Genres</Button>
-              { this.props.token ? (<Button color="inherit" onClick={this.logOut}>Logout</Button>) : (<Button color="inherit" onClick={this.clearSearchValue} component={Link} to='/login'>Login</Button>) }
+              { token ? (<Button color="inherit" onClick={this.logOut}>Logout</Button>) : (<Button color="inherit" onClick={this.clearSearchValue} component={Link} to='/login'>Login</Button>) }
             </Toolbar>
           </AppBar>
         </ClickAwayListener>

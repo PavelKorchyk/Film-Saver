@@ -24,7 +24,7 @@ const makeRequest = (url, method, token, data ) => {
           return null;
       }
     })
-    .catch(err => null);
+    .catch(err => console.log(err));
 }
 
 module.exports = makeRequest;
