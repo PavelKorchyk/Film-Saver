@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import makeRequest from '../../services/makeRequest';
 import FilmsView from './FilmsView';
 import { connect } from "react-redux";
-import { logOut, addSearchValue, removeSearchValue, loadingDone } from '../../redux/actions';
-import history from '../../services/history';
+import { removeSearchValue, loadingDone } from '../../redux/actions';
 import Loading from '../Loading/Loading';
 import NoData from '../NoData/NoData';
 
@@ -19,8 +18,6 @@ const mapStateToProps = store => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    logOut: () => dispatch(logOut()),
-    addSearchValue: (searchValue) => dispatch(addSearchValue(searchValue)),
     removeSearchValue: () => dispatch(removeSearchValue()),
     loadingDone: () => dispatch(loadingDone()),
   };
@@ -90,7 +87,10 @@ class Films extends Component {
   }
 
   render() {
-    if (Object.keys(this.state.result).length === 0) {
+    if (!Object.keys(this.state.result).length && this.props.isLoadingDone) {
+      return <NoData />
+    }
+    if (!Object.keys(this.state.result).length) {
       return <Loading />
     }
     return <FilmsView films={this.state.result}/>;

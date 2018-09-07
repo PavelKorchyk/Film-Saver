@@ -33,6 +33,12 @@ class Login extends Component {
     }
   }
 
+  componentDidMount() {
+    if (this.props.token) {
+      history.replace('/');
+    }
+  }
+
   componentDidUpdate() {
     if (this.props.token) {
       history.replace('/');

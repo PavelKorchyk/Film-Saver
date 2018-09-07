@@ -109,8 +109,8 @@ class Film extends Component {
     }
   }
 
-  sendComment = () => {
-    if (this.props.token && !this.state.isSendingComment) {
+  sendComment = (e) => {
+    if (this.props.token && !this.state.isSendingComment && this.state.comment) {
       this.setState({ isSendingComment: true }, () => {
         const data = {
           user_id: this.props.userId,

@@ -20,13 +20,12 @@ const { persistor, store } = configureStore();
 const App = () => {
   return (
     <Provider store={store}>
-      {/* <PersistGate loading={null} persistor={persistor}> */}
+      <PersistGate loading={null} persistor={persistor}>
         <Router history={history}>
           <div>
             <NavBar />
             <Switch>
               <Route exact path='/'component={Films}/>
-              <Route exact path='/films/'component={Films}/>
               <Route exact path='/films/:id'component={Film}/>
               <Route exact path='/genres'component={Genres}/>
               <Route exact path='/genres/:id'component={Genre}/>
@@ -38,7 +37,7 @@ const App = () => {
             </Switch>
           </div>
         </Router>
-      {/* </PersistGate> */}
+      </PersistGate>
     </Provider>
   );
 }

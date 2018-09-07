@@ -19,12 +19,35 @@ class Genre extends Component {
     super(props);
     this.state = {
       result: [],
+      filmsToRender: [],
+      skip: 0,
+      limit: 4,
     };
   }
 
   componentDidMount() {
     makeRequest(`/api/film/categories/${history.location.pathname.slice(8)}`, 'GET')
-      .then(result => this.setState({ result }));
+      .then(result => this.setState({ result }))
+      .then(() => this.addFilmsToRender())
+      .then(() => window.addEventListener('scroll', this.onScroll, false))
+  }
+
+  onScroll = () => {
+    if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 1200) && this.state.filmsToRender.length < this.state.result.films.length) {
+      this.addFilmsToRender();
+    }
+  }
+
+  addFilmsToRender = () => {
+      
+      let prevFilmsToRender = this.state.filmsToRender;
+      let newFilmsToRender = this.state.result.films.slice(this.state.skip, this.state.skip + this.state.limit);
+      let filmsToRender = prevFilmsToRender.concat(newFilmsToRender);
+      this.setState({ filmsToRender, skip: this.state.skip + this.state.limit })
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('scroll', this.onScroll, false);
   }
 
   genreRender() {
@@ -50,7 +73,7 @@ class Genre extends Component {
             </div>
           </div>
         </Paper>
-        <FilmsView films={this.state.result.films}/>
+        <FilmsView films={this.state.filmsToRender}/>
       </div>
   }
   
