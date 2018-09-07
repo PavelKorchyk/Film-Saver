@@ -27,9 +27,11 @@ class Genre extends Component {
 
   componentDidMount() {
     makeRequest(`/api/film/categories/${history.location.pathname.slice(8)}`, 'GET')
-      .then(result => this.setState({ result }))
-      .then(() => this.addFilmsToRender())
-      .then(() => window.addEventListener('scroll', this.onScroll, false))
+      .then(result => { 
+        this.setState({ result });
+        this.addFilmsToRender();
+        window.addEventListener('scroll', this.onScroll, false)
+      })
       .catch(err => console.log(err));
   }
 
@@ -41,9 +43,8 @@ class Genre extends Component {
 
   addFilmsToRender = () => {
     const { filmsToRender, result, skip, limit } = this.state;
-    let prevFilmsToRender = filmsToRender;
-    let newFilmsToRender = result.films.slice(skip, skip + limit);
-    let allfilmsToRender = prevFilmsToRender.concat(newFilmsToRender);
+    const newFilmsToRender = result.films.slice(skip, skip + limit);
+    const allfilmsToRender = filmsToRender.concat(newFilmsToRender);
     this.setState({ filmsToRender: allfilmsToRender, skip: skip + limit })
   }
 
@@ -54,21 +55,20 @@ class Genre extends Component {
   genreRender() {
     const { classes } = this.props;
     const { result, filmsToRender } = this.state;
-    const genre = result;
     return <div className={classes.root}>
         <Paper className={classes.paper}>
           <div className={classes.wrapper}>
-            <img src={genre.avatar} className={classes.avatar} />
+            <img src={result.avatar} className={classes.avatar} />
           </div>
           <div className={classes.wrapper}>
             <Typography variant="headline" component="h1" align="right" className={classes.typography}>
-              {genre.title}
+              {result.title}
             </Typography>
             <div>
               <div className={classes.list}>
                 <List>
                   <ListItem>
-                    <ListItemText primary="Description" secondary={genre.description} />
+                    <ListItemText primary="Description" secondary={result.description} />
                   </ListItem>
                 </List>
               </div>

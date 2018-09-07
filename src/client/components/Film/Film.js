@@ -53,8 +53,6 @@ class Film extends Component {
     makeRequest(`/api${history.location.pathname}`, 'GET')
     .then(result => {
       this.setState({ result, rating: result.rating });
-    })
-    .then(() => {
       const personalRating = this.props.ratedFilms.find(element => element.filmId == this.state.result._id);
       if (personalRating) {
         this.setState({ personalRating: personalRating.rating, rateMessage: "Your rate!" })
@@ -72,6 +70,9 @@ class Film extends Component {
   changeRating = (e) => {
     const { token, userId, updateRatedFilms } = this.props;
     const { rating, personalRating, result } = this.state;
+    if(!token) {
+      history.push('/login');
+    }
 
     if (token && !personalRating) {
       const data = {
@@ -81,7 +82,10 @@ class Film extends Component {
 
       this.setState({ personalRating: e }, () => 
         makeRequest(`/api/user/${userId}/rating`, 'PUT', token, data)
-        .then(result => {this.setState({ rateMessage: "Your rate!" }), updateRatedFilms(result.ratedFilms)})
+        .then(result => {
+          this.setState({ rateMessage: "Your rate!" }); 
+          updateRatedFilms(result.ratedFilms);
+        })
         .catch(err => console.log(err)));
 
       const newRating = ((rating + e) / 2).toFixed(2);
@@ -90,9 +94,6 @@ class Film extends Component {
         makeRequest(`/api${history.location.pathname}`, 'PUT', token, {"rating": newRating})
         .then(result => {this.setState({ result, rating: result.rating })})
         .catch(err => console.log(err)));
-        
-    } else if(!token) {
-      history.push('/login');
     } else {
       this.setState({ rateMessage: "You've rated this film" });
     }

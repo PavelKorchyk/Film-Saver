@@ -11,7 +11,7 @@ router.get('/:id', (req, res, next) => {
   User
   .findOne({ _id: req.params.id })
   .then(result => {
-    if (result.length === 0) {
+    if (!result.length) {
       throw new Error('no data fund');
     }
     res.status(200).json(result);

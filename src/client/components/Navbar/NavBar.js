@@ -76,8 +76,8 @@ class NavBar extends Component {
 
   //SORT
   handleClick = (event) => {
-    event.persist()
-    event.preventDefault()   
+    event.persist();
+    event.preventDefault();
     this.setState(state => ({
       isSortOpen: !state.isSortOpen,
       anchorEl: event.target
