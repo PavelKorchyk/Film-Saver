@@ -85,8 +85,7 @@ class Films extends Component {
       })
       .then(() => this.setState({ offset: this.state.offset + 10, isLoading: false }))
       .catch(err => {
-        this.setState({ error: true }),
-        console.log(err)
+        this.setState({ error: true })
       });
   }
 

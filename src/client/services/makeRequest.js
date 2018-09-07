@@ -21,12 +21,10 @@ const makeRequest = (url, method, token, data ) => {
         case 200:
           return response.json();
         default:
-          console.log('Response status is not 200')
+          return null;
       }
     })
-    .catch(err => {
-      console.log(err);
-    });
+    .catch(err => null);
 }
 
 module.exports = makeRequest;

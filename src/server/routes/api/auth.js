@@ -35,7 +35,7 @@ router.post('/login', (req, res, next) => {
           ratedFilms: user.ratedFilms,
         }); 
       })
-      .catch(err => console.log(err));
+      .catch(err => null);
   }  
 })
 

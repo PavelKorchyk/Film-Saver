@@ -96,21 +96,25 @@ class NavBar extends Component {
 
   sortByDefault = () => {
     this.props.changeSearchConditions('$natural', "1");
+    this.props.loading();
     this.handleClose();
   }
 
   sortByLastUpdated = () => {
     this.props.changeSearchConditions('$natural', "-1");
+    this.props.loading();
     this.handleClose();
   }
 
   sortByNameAZ = () => {
     this.props.changeSearchConditions('title', "1");
+    this.props.loading();
     this.handleClose();
   }
 
   sortByNameZA = () => {
     this.props.changeSearchConditions('title', "-1");
+    this.props.loading();
     this.handleClose();
   }
 

@@ -14,7 +14,7 @@ passport.use(new JWTStrategy(config,
             return done(null, user)
           }   
         })
-        .catch(err => console.log(err));
+        .catch(err => null);
   }
 ));
 

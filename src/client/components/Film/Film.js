@@ -60,7 +60,7 @@ class Film extends Component {
         this.setState({ personalRating: personalRating.rating, rateMessage: "Your rate!" })
       }
     })
-    .catch(err => console.log(err));
+    .catch(err => null);
   }
 
   componentDidUpdate(prevProps) {
@@ -78,13 +78,13 @@ class Film extends Component {
       this.setState({ personalRating: e }, () => 
         makeRequest(`/api/user/${this.props.userId}/rating`, 'PUT', this.props.token, data)
         .then(result => {this.setState({ rateMessage: "Your rate!" }), this.props.updateRatedFilms(result.ratedFilms)})
-        .catch(err => console.log(err)));
+        .catch(err => null));
 
       const newRating = ((this.state.rating + e) / 2).toFixed(2);
       this.setState({ rating: e }, () => 
         makeRequest(`/api${history.location.pathname}`, 'PUT', this.props.token, {"rating": newRating})
         .then(result => {this.setState({ result, rating: result.rating })})
-        .catch(err => console.log(err)))
+        .catch(err => null))
     } else if(!this.props.token) {
       history.push('/login');
     } else {
@@ -119,7 +119,7 @@ class Film extends Component {
         };
         makeRequest(`/api${history.location.pathname}/comment`, 'PUT', this.props.token, data)
           .then(result => this.setState({ result, comment: '', isSendingComment: false }))
-          .catch(err => console.log(err))
+          .catch(err => null)
       });
     } else if(!this.props.token) {
       history.push('/login');
