@@ -5,14 +5,9 @@ import Divider from '@material-ui/core/Divider';
 import styles from './styles';
 
 class Comments extends Component {
-  render() {
-  const { classes, comments } = this.props;
-  if (!comments) {
-    return <div className={classes.paperMainInfo}>
-      <img src={"https://upload.wikimedia.org/wikipedia/commons/6/63/Elipsis.gif"} alt="" className={classes.elipsis} />
-    </div>
-  }
-  return <React.Fragment>
+  commentsRender = () => {
+    const { classes, comments } = this.props;
+    return <React.Fragment>
         {comments.map((comment, i) => (
           <React.Fragment key={i}>
             <Divider className={classes.commentDivider} />
@@ -30,6 +25,16 @@ class Comments extends Component {
           </React.Fragment>
         ))}
       </React.Fragment>
+  }
+
+  render() {
+  const { classes, comments } = this.props;
+  if (!comments) {
+    return <div className={classes.paperMainInfo}>
+      <img src={"https://upload.wikimedia.org/wikipedia/commons/6/63/Elipsis.gif"} alt="" className={classes.elipsis} />
+    </div>
+  }
+  return this.commentsRender();
   }
 }
 

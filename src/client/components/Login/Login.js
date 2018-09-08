@@ -11,6 +11,7 @@ import history from '../../services/history';
 import { logIn } from '../../redux/actions/index'; 
 import { connect } from 'react-redux';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
+import { loginUrl } from '../../services/createURL';
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -54,13 +55,12 @@ class Login extends Component {
     if (!email || !password) {
       this.setState({ errors: 'Enter email and password' });
     } else {
-      const url = '/api/auth/login';
       const method = 'POST';
       const data = {
         email: email,
         password: password,
       };
-      makeRequest (url, method, null, data)
+      makeRequest (loginUrl(), method, null, data)
       .then(response => {
         if (response.Error) {
           this.setState({ errors: response.Error });

@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import styles from './styles';
 import history from '../../services/history';
 import Loading from '../Loading/Loading';
+import { genresUrl } from '../../services/createURL';
 
 const mapStateToProps = store => {
   return {token: store.user.token};
@@ -24,7 +25,7 @@ class Genres extends Component {
   }
 
   componentDidMount() {
-    makeRequest('/api/film/categories/', 'GET').then(result => this.setState({ result }));
+    makeRequest(genresUrl(), 'GET').then(result => this.setState({ result }));
   }
   
   genresRender() {

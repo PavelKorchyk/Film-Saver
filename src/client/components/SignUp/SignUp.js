@@ -7,6 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import validate from '../../services/validate';
+import { signUpUrl } from '../../services/createURL';
 import makeRequest from '../../services/makeRequest';
 import history from '../../services/history';
 import { connect } from 'react-redux';
@@ -25,7 +26,7 @@ class Login extends Component {
       password: '',
       passwordConfirmation: '',
       errors: '',
-      numOfSignUpAttempts: 0,
+      numOfSignUpAttempts: 2,
       signUpButtonColor: "primary",
     };
   }
@@ -37,13 +38,12 @@ class Login extends Component {
   }
 
   onFieldChange = (e) => {
-    const { password, email, username, passwordConfirmation } = this.state;
     this.setState({[e.target.id]: e.target.value}, () => {
       const errors = {
-        password: password,
-        email: email,
-        username: username,
-        passwordConfirmation: passwordConfirmation,
+        password: this.state.password,
+        email: this.state.email,
+        username: this.state.username,
+        passwordConfirmation: this.state.passwordConfirmation,
       };
       this.setState({ errors: validate(errors) });
     });
@@ -58,15 +58,14 @@ class Login extends Component {
       if (numOfSignUpAttempts > 0 && errors) {
         this.setState({ signUpButtonColor: "secondary" });
       }
-      if (Object.keys(errors).length === 0) {
-        const url = 'api/user/signup';
+      if (!Object.keys(errors).length) {
         const method = 'POST';
         const data = {
           email: email,
           username: username,
           password: password,
         };
-        makeRequest(url, method, null, data)
+        makeRequest(signUpUrl(), method, null, data)
         .then(response => {
           if (response.message || !response) {
             this.setState({ signUpButtonColor: "secondary" });

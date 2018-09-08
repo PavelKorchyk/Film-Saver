@@ -55,7 +55,7 @@ class NavBar extends Component {
     this.setState({ searchValue: '' });
     this.props.removeSearchValue();
     this.props.loading();
-    this.sortByDefault();
+    this.sortBy("$natural", "1");
   }
 
   //SEARCH
@@ -94,26 +94,8 @@ class NavBar extends Component {
     this.setState({ anchorEl: null });
   }
 
-  sortByDefault = () => {
-    this.props.changeSearchConditions('$natural', "1");
-    this.props.loading();
-    this.handleClose();
-  }
-
-  sortByLastUpdated = () => {
-    this.props.changeSearchConditions('$natural', "-1");
-    this.props.loading();
-    this.handleClose();
-  }
-
-  sortByNameAZ = () => {
-    this.props.changeSearchConditions('title', "1");
-    this.props.loading();
-    this.handleClose();
-  }
-
-  sortByNameZA = () => {
-    this.props.changeSearchConditions('title', "-1");
+  sortBy = (type, value) => {
+    this.props.changeSearchConditions(type, value);
     this.props.loading();
     this.handleClose();
   }
@@ -142,10 +124,10 @@ class NavBar extends Component {
                   <Sort />
                 </Button>
                   <Menu id="sort-menu" open={this.state.isSortOpen} anchorEl={this.state.anchorEl} onClose={this.handleClose}>
-                    <MenuItem onClick={this.sortByDefault}>By default</MenuItem>
-                    <MenuItem onClick={this.sortByLastUpdated}>Last Updated</MenuItem>
-                    <MenuItem onClick={this.sortByNameAZ}>Name A-Z</MenuItem>
-                    <MenuItem onClick={this.sortByNameZA}>Name Z-A</MenuItem>
+                    <MenuItem onClick={() => this.sortBy("$natural", "1")}>By default</MenuItem>
+                    <MenuItem onClick={() => this.sortBy("$natural", "-1")}>Last Updated</MenuItem>
+                    <MenuItem onClick={() => this.sortBy("title", "1")}>Name A-Z</MenuItem>
+                    <MenuItem onClick={() => this.sortBy("title", "-1")}>Name Z-A</MenuItem>
                   </Menu>
               </React.Fragment>
               <TextField

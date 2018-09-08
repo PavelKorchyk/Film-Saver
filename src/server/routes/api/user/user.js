@@ -27,7 +27,7 @@ router.put('/:id/rating', (req, res, next) => {
     .exec()
     .then(result => {
       if (!result) {
-        res.status(400).json(result);
+        res.status(400).json({ error: "Bad request. Can't get the result!" });
       } else {
         res.status(200).json(result);
       }

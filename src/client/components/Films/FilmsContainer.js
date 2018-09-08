@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import { removeSearchValue, loadingDone } from '../../redux/actions';
 import Loading from '../Loading/Loading';
 import NoData from '../NoData/NoData';
+import { filmsUrl } from '../../services/createURL';
 
 const mapStateToProps = store => {
   return {
@@ -57,22 +58,29 @@ class Films extends Component {
     }
   }
 
-  createUrl = () => {
-    const { searchValue, sortType, sortValue } = this.props;
-    const { offset } = this.state;
-    let url;
-    if (searchValue) {
-      url = `/api/films/?title=${searchValue}&offset=${offset}&sortType=${sortType}&sortValue=${sortValue}`;
-    } else {
-      url = `/api/films/?offset=${offset}&sortType=${sortType}&sortValue=${sortValue}`;
-    }
-    return url;
-  }
+  // createUrl = () => {
+  //   const { searchValue, sortType, sortValue } = this.props;
+  //   const { offset } = this.state;
+  //   let url;
+  //   if (searchValue) {
+  //     url = `/api/films/?title=${searchValue}&offset=${offset}&sortType=${sortType}&sortValue=${sortValue}`;
+  //   } else {
+  //     url = `/api/films/?offset=${offset}&sortType=${sortType}&sortValue=${sortValue}`;
+  //   }
+  //   return url;
+  // }
 
   paginatedLoading = () => {
     this.setState({ isLoading: true });
-    const url = this.createUrl();
-    makeRequest(url, 'GET')
+    const { searchValue, sortType, sortValue } = this.props;
+    const { offset } = this.state;
+    const urlData = {
+      title: searchValue,
+      offset: offset,
+      sortType: sortType,
+      sortValue: sortValue,
+    }
+    makeRequest(filmsUrl(urlData), 'GET')
       .then(result => {
         if (!result.length) {
           this.props.loadingDone();

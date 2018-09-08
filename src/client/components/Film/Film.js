@@ -21,6 +21,7 @@ import TextField from '@material-ui/core/TextField';
 import Send from '@material-ui/icons/Send';
 import Comments from './FilmCommentsView';
 import { updateRatedFilms } from '../../redux/actions/index';
+import { filmUrl, commentUrl, ratingUrl } from '../../services/createURL';
 
 const mapStateToProps = store => ({ 
   token: store.user.token,
@@ -50,7 +51,7 @@ class Film extends Component {
   }
 
   componentDidMount() {
-    makeRequest(`/api${history.location.pathname}`, 'GET')
+    makeRequest(filmUrl(history.location.pathname), 'GET')
     .then(result => {
       this.setState({ result, rating: result.rating });
       const personalRating = this.props.ratedFilms.find(element => element.filmId == this.state.result._id);
@@ -70,18 +71,17 @@ class Film extends Component {
   changeRating = (e) => {
     const { token, userId, updateRatedFilms } = this.props;
     const { rating, personalRating, result } = this.state;
+
     if(!token) {
       history.push('/login');
     }
-
     if (token && !personalRating) {
       const data = {
         filmId: result._id,
         rating: e,
       };
-
       this.setState({ personalRating: e }, () => 
-        makeRequest(`/api/user/${userId}/rating`, 'PUT', token, data)
+        makeRequest(ratingUrl(userId), 'PUT', token, data)
         .then(result => {
           this.setState({ rateMessage: "Your rate!" }); 
           updateRatedFilms(result.ratedFilms);
@@ -91,7 +91,7 @@ class Film extends Component {
       const newRating = ((rating + e) / 2).toFixed(2);
 
       this.setState({ rating: e }, () => 
-        makeRequest(`/api${history.location.pathname}`, 'PUT', token, {"rating": newRating})
+        makeRequest(filmUrl(history.location.pathname), 'PUT', token, {"rating": newRating})
         .then(result => {this.setState({ result, rating: result.rating })})
         .catch(err => console.log(err)));
     } else {
@@ -120,6 +120,9 @@ class Film extends Component {
     const { token, userId, userName } = this.props;
     const { isSendingComment, comment } = this.state;
 
+    if(!token) {
+      history.push('/login');
+    }
     if (token && !isSendingComment && comment) {
       this.setState({ isSendingComment: true }, () => {
         const data = {
@@ -127,12 +130,10 @@ class Film extends Component {
           userName: userName,
           text: comment,
         };
-        makeRequest(`/api${history.location.pathname}/comment`, 'PUT', token, data)
+        makeRequest(commentUrl(history.location.pathname), 'PUT', token, data)
           .then(result => this.setState({ result, comment: '', isSendingComment: false }))
           .catch(err => console.log(err));
       });
-    } else if(!token) {
-      history.push('/login');
     }
   }
 
