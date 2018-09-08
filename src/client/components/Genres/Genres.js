@@ -63,7 +63,7 @@ class Genres extends Component {
   }
 
   render() {
-    if (Object.keys(this.state.result).length === 0) {
+    if (!Object.keys(this.state.result).length) {
       return <Loading />
     }
     return this.genresRender();

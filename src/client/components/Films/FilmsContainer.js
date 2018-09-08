@@ -58,18 +58,6 @@ class Films extends Component {
     }
   }
 
-  // createUrl = () => {
-  //   const { searchValue, sortType, sortValue } = this.props;
-  //   const { offset } = this.state;
-  //   let url;
-  //   if (searchValue) {
-  //     url = `/api/films/?title=${searchValue}&offset=${offset}&sortType=${sortType}&sortValue=${sortValue}`;
-  //   } else {
-  //     url = `/api/films/?offset=${offset}&sortType=${sortType}&sortValue=${sortValue}`;
-  //   }
-  //   return url;
-  // }
-
   paginatedLoading = () => {
     this.setState({ isLoading: true });
     const { searchValue, sortType, sortValue } = this.props;
