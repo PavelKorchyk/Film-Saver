@@ -21,7 +21,7 @@ import TextField from '@material-ui/core/TextField';
 import Send from '@material-ui/icons/Send';
 import Comments from './FilmCommentsView';
 import { updateRatedFilms } from '../../redux/actions/index';
-import { filmUrl, commentUrl, ratingUrl } from '../../services/createURL';
+import { createFilmUrl, createCommentUrl, createRatingUrl } from '../../services/createURL';
 
 const mapStateToProps = store => ({ 
   token: store.user.token,
@@ -51,7 +51,7 @@ class Film extends Component {
   }
 
   componentDidMount() {
-    makeRequest(filmUrl(history.location.pathname), 'GET')
+    makeRequest(createFilmUrl(history.location.pathname), 'GET')
     .then(result => {
       this.setState({ result, rating: result.rating });
       const personalRating = this.props.ratedFilms.find(element => element.filmId == this.state.result._id);
@@ -81,7 +81,7 @@ class Film extends Component {
         rating: e,
       };
       this.setState({ personalRating: e }, () => 
-        makeRequest(ratingUrl(userId), 'PUT', token, data)
+        makeRequest(createRatingUrl(userId), 'PUT', token, data)
         .then(result => {
           this.setState({ rateMessage: "Your rate!" }); 
           updateRatedFilms(result.ratedFilms);
@@ -91,7 +91,7 @@ class Film extends Component {
       const newRating = ((rating + e) / 2).toFixed(2);
 
       this.setState({ rating: e }, () => 
-        makeRequest(filmUrl(history.location.pathname), 'PUT', token, {"rating": newRating})
+        makeRequest(createFilmUrl(history.location.pathname), 'PUT', token, {"rating": newRating})
         .then(result => {this.setState({ result, rating: result.rating })})
         .catch(err => console.log(err)));
     } else {
@@ -130,7 +130,7 @@ class Film extends Component {
           userName: userName,
           text: comment,
         };
-        makeRequest(commentUrl(history.location.pathname), 'PUT', token, data)
+        makeRequest(createCommentUrl(history.location.pathname), 'PUT', token, data)
           .then(result => this.setState({ result, comment: '', isSendingComment: false }))
           .catch(err => console.log(err));
       });

@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import { removeSearchValue, loadingDone } from '../../redux/actions';
 import Loading from '../Loading/Loading';
 import NoData from '../NoData/NoData';
-import { filmsUrl } from '../../services/createURL';
+import { createFilmsUrl } from '../../services/createURL';
 
 const mapStateToProps = store => {
   return {
@@ -68,7 +68,7 @@ class Films extends Component {
       sortType: sortType,
       sortValue: sortValue,
     }
-    makeRequest(filmsUrl(urlData), 'GET')
+    makeRequest(createFilmsUrl(urlData), 'GET')
       .then(result => {
         if (!result.length) {
           this.props.loadingDone();

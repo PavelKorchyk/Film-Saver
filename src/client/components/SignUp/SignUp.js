@@ -7,7 +7,7 @@ import Paper from '@material-ui/core/Paper';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import validate from '../../services/validate';
-import { signUpUrl } from '../../services/createURL';
+import { createSignUpUrl } from '../../services/createURL';
 import makeRequest from '../../services/makeRequest';
 import history from '../../services/history';
 import { connect } from 'react-redux';
@@ -26,7 +26,7 @@ class Login extends Component {
       password: '',
       passwordConfirmation: '',
       errors: '',
-      numOfSignUpAttempts: 2,
+      numOfSignUpAttempts: 0,
       signUpButtonColor: "primary",
     };
   }
@@ -65,7 +65,7 @@ class Login extends Component {
           username: username,
           password: password,
         };
-        makeRequest(signUpUrl(), method, null, data)
+        makeRequest(createSignUpUrl(), method, null, data)
         .then(response => {
           if (response.message || !response) {
             this.setState({ signUpButtonColor: "secondary" });

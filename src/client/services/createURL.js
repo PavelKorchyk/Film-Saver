@@ -7,35 +7,35 @@ const user = "/user/";
 const rating = "/rating/";
 const films = "/films/";
 
-export function signUpUrl() {
+export function createSignUpUrl() {
   return `${api}${signUp}`;
 }
 
-export function loginUrl() {
+export function createLoginUrl() {
   return `${api}${login}`;
 }
 
-export function genresUrl() {
+export function createGenresUrl() {
   return `${api}${genres}`;
 }
 
-export function genreUrl(genreId) {
+export function createGenreUrl(genreId) {
   return `${api}${genres}${genreId}`;
 }
 
-export function filmUrl(film) {
+export function createFilmUrl(film) {
   return `${api}${film}`;
 }
 
-export function commentUrl(film) {
-  return `${filmUrl(film)}${comment}`;
+export function createCommentUrl(film) {
+  return `${createFilmUrl(film)}${comment}`;
 }
 
-export function ratingUrl(userId) {
+export function createRatingUrl(userId) {
   return `${api}${user}${userId}${rating}`;
 }
 
-export function filmsUrl(urlData) {
+export function createFilmsUrl(urlData) {
   let url = "";
   for (var key in urlData) {
     if (urlData[key]) {

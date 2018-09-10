@@ -11,7 +11,7 @@ import history from '../../services/history';
 import { logIn } from '../../redux/actions/index'; 
 import { connect } from 'react-redux';
 import ErrorMessage from '../ErrorMessage/ErrorMessage';
-import { loginUrl } from '../../services/createURL';
+import { createLoginUrl } from '../../services/createURL';
 
 const mapDispatchToProps = dispatch => {
   return {
@@ -60,7 +60,7 @@ class Login extends Component {
         email: email,
         password: password,
       };
-      makeRequest (loginUrl(), method, null, data)
+      makeRequest (createLoginUrl(), method, null, data)
       .then(response => {
         if (response.Error) {
           this.setState({ errors: response.Error });

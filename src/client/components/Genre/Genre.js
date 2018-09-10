@@ -10,7 +10,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import makeRequest from '../../services/makeRequest';
 import styles from './styles';
 import history from '../../services/history';
-import { genreUrl } from '../../services/createURL';
+import { createGenreUrl } from '../../services/createURL';
 
 
 const mapStateToProps = store => ({ token: store.user.token });
@@ -27,7 +27,7 @@ class Genre extends Component {
   }
 
   componentDidMount() {
-    makeRequest(genreUrl(history.location.pathname.slice(8)), 'GET')
+    makeRequest(createGenreUrl(history.location.pathname.slice(8)), 'GET')
       .then(result => { 
         this.setState({ result });
         this.addFilmsToRender();
