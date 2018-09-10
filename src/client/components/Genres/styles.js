@@ -3,16 +3,16 @@ const styles = () => ({
     marginTop: 10,
   },
   card: {
-    maxWidth: 345,
+    maxWidth: 600,
     margin: 10,
   },
   media: {
-    objectFit: 'cover',
+    objectFit: "cover",
   },
   paper: {
     display: "flex",
     flexWrap: "wrap",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   wrapper: {
     margin: 200,

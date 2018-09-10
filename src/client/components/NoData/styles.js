@@ -6,6 +6,7 @@ const styles = () => ({
   },
   notFound: {
     alignSelf: "center",
+    width: "150%",
   }
 });
 

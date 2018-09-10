@@ -7,6 +7,36 @@ const bcrypt = require('bcrypt');
 //Bring in User Model
 const User = require('../../../models/user');
 
+router.get('/:id', (req, res, next) => {
+  User
+  .findOne({ _id: req.params.id })
+  .then(result => {
+    if (!result.length) {
+      throw new Error('no data fund');
+    }
+    res.status(200).json(result);
+  })
+  .catch(err => {
+    res.status(500).json({error: err});
+  })
+})
+
+router.put('/:id/rating', (req, res, next) => {
+  User.findByIdAndUpdate(req.params.id, {$push: { ratedFilms: req.body }}, { new: true,  })
+    .populate('films')
+    .exec()
+    .then(result => {
+      if (!result) {
+        res.status(400).json({ error: "Bad request. Can't get the result!" });
+      } else {
+        res.status(200).json(result);
+      }
+    })
+    .catch(err => {
+      res.status(500).json({ error: err});
+    });
+})
+
 //Register Form
 router.post('/signup', (req, res, next) => {
   if (

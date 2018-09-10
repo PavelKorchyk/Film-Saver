@@ -1,14 +1,13 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
-
 const outputDirectory = 'dist';
 
 module.exports = {
   entry: './src/client/index',
   output: {
     path: path.join(__dirname, outputDirectory),
-    filename: 'bundle.js',
+    filename: '[name].bundle.js',
     publicPath: '/',
   },
   module: {
@@ -33,6 +32,7 @@ module.exports = {
   devServer: {
     port: 4000,
     open: true,
+    noInfo: true,
     historyApiFallback: true,
     proxy: {
       '/api': 'http://localhost:6000'
@@ -44,5 +44,8 @@ module.exports = {
       template: './public/index.html',
       favicon: './public/film.ico',
     })
-  ]
+  ],
+  performance: {
+    hints: false
+  },
 };

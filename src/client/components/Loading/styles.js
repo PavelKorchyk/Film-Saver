@@ -1,10 +1,10 @@
 const styles = () => ({
   wrapper: {
-    margin: 100,
+    margin: 200,
     display: "flex",
     justifyContent: "center",
   },
-  notFound: {
+  elipsis: {
     alignSelf: "center",
   }
 });

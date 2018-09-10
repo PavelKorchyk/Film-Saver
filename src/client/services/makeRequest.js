@@ -13,7 +13,7 @@ const makeRequest = (url, method, token, data ) => {
     .then(response => {
       switch(response.status) {
         case 401:
-          history.default.replace('/login');
+          history.default.push('/login');
           break;
         case 400:
           console.warn('Bad request');
@@ -21,12 +21,10 @@ const makeRequest = (url, method, token, data ) => {
         case 200:
           return response.json();
         default:
-          console.log('Response status is not 200')
+          return null;
       }
     })
-    .catch(err => {
-      console.log(err);
-    });
+    .catch(err => console.log(err));
 }
 
 module.exports = makeRequest;

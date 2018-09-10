@@ -18,7 +18,6 @@ router
         skip: Number(req.query.offset) || DEFAULT_QUERY_CATEGORIES_OFFSET, 
         limit: Number(req.query.limit) || DEFAULT_QUERY_CATEGORIES_LIMIT,
       })
-      .populate('films')
       .then(result => {
         res.status(200).json(result);
       })
@@ -63,7 +62,7 @@ router
       .exec()
       .then(result => {
         if (!result) {
-          res.status(400).json(result);
+          res.status(400).json({ error: "Bad request. Can't get the result!" });
         } else {
           res.status(200).json(result);
         }

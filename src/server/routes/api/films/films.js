@@ -13,12 +13,15 @@ const putFilmsSchema = require('../../../validationSchemas/putFilmsSchema');
 
 router
   .get('/', (req, res, next) => {
+    const wayToSort = {
+      [req.query.sortType]: req.query.sortValue
+    }
     Films
-      .find({}, null, {      
+      .find({ title: (new RegExp(req.query.title, "i")) }, null, {      
         skip: Number(req.query.offset) || DEFAULT_QUERY_FILMS_OFFSET, 
         limit: Number(req.query.limit) || DEFAULT_QUERY_FILMS_LIMIT,
+        sort: wayToSort
       })
-      .populate('categories')
       .then(result => {
         res.status(200).json(result);
       })
@@ -30,6 +33,7 @@ router
   .get('/:id', (req, res, next) => {
     const id = req.params.id;
     Films.findById(id)
+      .populate('categories')
       .exec()
       .then(result => {
         if (result) {
@@ -52,7 +56,7 @@ router
       avatar: req.body.avatar,
       gallery: req.body.gallery,
       rating: req.body.rating,
-      category: req.body.category,
+      categories: req.body.categories,
     });
     films.save()
       .then(result => {
@@ -66,10 +70,28 @@ router
   .put('/:id', passport.authenticate('jwt', { session: false }), dataValidation(putFilmsSchema),
   (req, res, next) => {
     Films.findByIdAndUpdate(req.params.id, req.body, { new: true })
+      .populate('categories')
       .exec()
       .then(result => {
         if (!result) {
-          res.status(400).json(result);
+          res.status(400).json({ error: "Bad request. Can't get the result!" });
+        } else {
+          res.status(200).json(result);
+        }
+      })
+      .catch(err => {
+        res.status(500).json({ error: err});
+      });
+  })
+
+  .put('/:id/comment', passport.authenticate('jwt', { session: false }), dataValidation(putFilmsSchema),
+  (req, res, next) => {
+    Films.findByIdAndUpdate(req.params.id, {$push: { comments: req.body }}, { new: true })
+      .populate('categories')
+      .exec()
+      .then(result => {
+        if (!result) {
+          res.status(400).json({ error: "Bad request. Can't get the result!" });
         } else {
           res.status(200).json(result);
         }
