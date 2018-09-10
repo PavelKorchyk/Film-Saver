@@ -6,6 +6,7 @@ import { removeSearchValue, loadingDone } from '../../redux/actions';
 import Loading from '../Loading/Loading';
 import NoData from '../NoData/NoData';
 import { createFilmsUrl } from '../../services/createURL';
+import { INFINITY_SCROLL_PARAM, OFFSET_INCREMENT } from '../../services/constants';
 
 const mapStateToProps = store => {
   return {
@@ -53,7 +54,7 @@ class Films extends Component {
   }
 
   onScroll = () => {
-    if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 1200) && !this.state.isLoading && !this.props.isLoadingDone) {
+    if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - INFINITY_SCROLL_PARAM) && !this.state.isLoading && !this.props.isLoadingDone) {
       this.paginatedLoading();
     }
   }
@@ -79,9 +80,10 @@ class Films extends Component {
           this.setState({ result: [...this.state.result, ...result] });
         }
       })
-      .then(() => this.setState({ offset: this.state.offset + 10, isLoading: false }))
+      .then(() => this.setState({ offset: this.state.offset + OFFSET_INCREMENT, isLoading: false }))
       .catch(err => {
         this.setState({ error: true })
+        console.log(err);
       });
   }
 

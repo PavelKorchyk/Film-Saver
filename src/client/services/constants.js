@@ -1,0 +1,12 @@
+export const MIN_PASSWORD_LENGTH = 6;
+export const MAX_USERNAME_LENGTH = 15;
+export const INFINITY_SCROLL_PARAM = 1200;
+export const EMAIL_VALIDATION_REGEX = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
+export const COMMENT_VALIDATION_REGEX = /^[a-z0-9!@#$%^&*()_+=:"',.?;<> -]*$/i;
+export const COMMENT_MAX_LENGTH = 500;
+export const GALLERY_ROW_HEIGTH = 150;
+export const GALLERY_MAX_ROWS = 1;
+export const GALLERY_THUMBNAIL_WIDTH = 150;
+export const GALLERY_THUMBNAIL_HEIGTH = 100;
+export const STAR_RATING_NUMBER_OF_STARS = 5;
+export const OFFSET_INCREMENT = 10;

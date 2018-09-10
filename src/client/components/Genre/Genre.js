@@ -11,6 +11,7 @@ import makeRequest from '../../services/makeRequest';
 import styles from './styles';
 import history from '../../services/history';
 import { createGenreUrl } from '../../services/createURL';
+import { INFINITY_SCROLL_PARAM } from '../../services/constants';
 
 
 const mapStateToProps = store => ({ token: store.user.token });
@@ -27,7 +28,7 @@ class Genre extends Component {
   }
 
   componentDidMount() {
-    makeRequest(createGenreUrl(history.location.pathname.slice(8)), 'GET')
+    makeRequest(createGenreUrl(history.location.state.genreId), 'GET')
       .then(result => { 
         this.setState({ result });
         this.addFilmsToRender();
@@ -37,7 +38,7 @@ class Genre extends Component {
   }
 
   onScroll = () => {
-    if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 1200) && this.state.filmsToRender.length < this.state.result.films.length) {
+    if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - INFINITY_SCROLL_PARAM) && this.state.filmsToRender.length < this.state.result.films.length) {
       this.addFilmsToRender();
     }
   }

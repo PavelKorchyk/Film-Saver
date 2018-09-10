@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 import { withStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Divider from '@material-ui/core/Divider';
@@ -15,7 +16,7 @@ class Comments extends Component {
               <div className={classes.commentField}>
                 <Avatar className={classes.commentEl}>{comment.userName.slice(0,1)}</Avatar>
                 <div className={classes.commentEl}>{comment.userName}</div>
-                <div className={classes.commentEl}>{`${comment.time.slice(0,10)} ${comment.time.slice(11,19)}`}
+                <div className={classes.commentEl}>{moment(comment.time).format("LLL")}
                 </div>
               </div>
               <div className={classes.commentField}>

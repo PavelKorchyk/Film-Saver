@@ -37,6 +37,9 @@ class Genres extends Component {
             <Card onClick={() => { 
                 history.push({
                   pathname: `genres/${genre._id}`,
+                  state: {
+                    genreId: genre._id,
+                  }
                 }); 
               }} key={genre._id} className={classes.card}>
               <CardActionArea>

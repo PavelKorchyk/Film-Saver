@@ -22,6 +22,7 @@ import Send from '@material-ui/icons/Send';
 import Comments from './FilmCommentsView';
 import { updateRatedFilms } from '../../redux/actions/index';
 import { createFilmUrl, createCommentUrl, createRatingUrl } from '../../services/createURL';
+import { COMMENT_VALIDATION_REGEX, COMMENT_MAX_LENGTH, GALLERY_ROW_HEIGTH, GALLERY_MAX_ROWS, STAR_RATING_NUMBER_OF_STARS, GALLERY_THUMBNAIL_WIDTH, GALLERY_THUMBNAIL_HEIGTH } from '../../services/constants';
 
 const mapStateToProps = store => ({ 
   token: store.user.token,
@@ -100,7 +101,7 @@ class Film extends Component {
   }
 
   onCommentFieldChange = (e) => {
-    if (/^[a-z0-9!@#$%^&*()_+=:"',.?;<> -]*$/i.test(e.target.value) && e.target.value.length < 500) {
+    if (COMMENT_VALIDATION_REGEX.test(e.target.value) && e.target.value.length < COMMENT_MAX_LENGTH) {
       this.setState({ comment: e.target.value, error: false });
       if (e.key === "Enter") {
         this.sendComment();
@@ -143,8 +144,8 @@ class Film extends Component {
     const film = result;
     
     const images = film.gallery.map(url => {
-      return { src: url, thumbnail: url, thumbnailWidth: 150,
-        thumbnailHeight: 100, }
+      return { src: url, thumbnail: url, thumbnailWidth: GALLERY_THUMBNAIL_WIDTH,
+        thumbnailHeight: GALLERY_THUMBNAIL_HEIGTH, }
     });
     return <div className={classes.root}>
         <Paper className={classes.paperMainInfo}>
@@ -189,7 +190,7 @@ class Film extends Component {
                 rating={ personalRating || rating }
                 starRatedColor="blue"
                 changeRating={this.changeRating}
-                numberOfStars={5}
+                numberOfStars={STAR_RATING_NUMBER_OF_STARS}
                 name='rating'
               />
             </div>
@@ -199,8 +200,8 @@ class Film extends Component {
           <Gallery
             images={images}
             enableImageSelection={false}
-            rowHeight={180}
-            maxRows={1}
+            rowHeigth={GALLERY_ROW_HEIGTH}
+            maxRows={GALLERY_MAX_ROWS}
           />
         </Paper>
         <Paper className={classes.paperComments}>

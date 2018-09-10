@@ -43,11 +43,6 @@ export function createFilmsUrl(urlData) {
         url += "&";
       }
       url += key + "=" + urlData[key];
-    } else {
-      if (url != "") {
-        url += "&";
-      }
-      url += key + "=" + "";
     }
   }
   return `${api}${films}?${url}`;
