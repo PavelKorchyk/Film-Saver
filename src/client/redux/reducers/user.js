@@ -9,19 +9,31 @@ const initialState = {
   sortType: '$natural',
   sortValue: '1',
   ratedFilms: [],
+  signInButtonColor: 'primary',
+  errorMessage: '',
 };
 
 const user = (state = initialState, action) => {
   switch (action.type) {
-    case 'LOGIN':
+    case 'LOGIN_REQUEST':
+      return {
+        ...state
+      }
+    case 'LOGIN_SUCCESS':
       return {
         ...state,
-        email: action.email,
-        userId: action.userId,
-        username: action.username,
-        token: action.token,
+        email: action.response.data.email,
+        userId: action.response.data.userId,
+        username: action.response.data.username,
+        token: action.response.data.token,
         isLogedIn: true,
-        ratedFilms: action.ratedFilms,
+        ratedFilms: action.response.data.ratedFilms,
+      }
+    case 'LOGIN_FAILED':
+      return {
+        ...state,
+        signInButtonColor: 'secondary',
+        errorMessage: 'Wrong email or password',
       }
     case 'LOGOUT':
       return {

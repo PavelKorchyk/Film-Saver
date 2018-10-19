@@ -1,6 +1,7 @@
-import { combineReducers } from 'redux';
+import { persistCombineReducers } from 'redux-persist';
 import user from './user';
+import { persistConfig } from '../../constants/persistConfig';
 
-export default combineReducers({
+export default persistCombineReducers(persistConfig, {
   user,
 });

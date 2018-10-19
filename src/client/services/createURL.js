@@ -39,10 +39,7 @@ export function createFilmsUrl(urlData) {
   let url = "";
   for (var key in urlData) {
     if (urlData[key]) {
-      if (url != "") {
-        url += "&";
-      }
-      url += key + "=" + urlData[key];
+      url += `${key}=${urlData[key]}&`;
     }
   }
   return `${api}${films}?${url}`;

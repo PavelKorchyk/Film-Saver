@@ -9,4 +9,4 @@ export const GALLERY_MAX_ROWS = 1;
 export const GALLERY_THUMBNAIL_WIDTH = 150;
 export const GALLERY_THUMBNAIL_HEIGTH = 100;
 export const STAR_RATING_NUMBER_OF_STARS = 5;
-export const OFFSET_INCREMENT = 10;
+export const OFFSET_INCREMENT = 20;

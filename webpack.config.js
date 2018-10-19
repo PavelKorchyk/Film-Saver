@@ -4,7 +4,12 @@ const CleanWebpackPlugin = require('clean-webpack-plugin');
 const outputDirectory = 'dist';
 
 module.exports = {
-  entry: './src/client/index',
+  entry: ['babel-polyfill', './src/client/index'],
+  resolve: {
+    alias: {
+      Genres: path.resolve(__dirname, 'src/client/components/Genres/Genres.js'),
+    }
+  },
   output: {
     path: path.join(__dirname, outputDirectory),
     filename: '[name].bundle.js',

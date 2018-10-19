@@ -1,11 +1,11 @@
 import React from 'react';
 import { Router, Switch, Route, Redirect } from 'react-router-dom';
 import NavBar from './components/Navbar/NavBar';
-import Login from './components/Login/Login';
+import Login from './components/Login/containers/LoginContainer';
 import NotFound from './components/NotFound/NotFound';
 import SignUp from './components/SignUp/SignUp';
 import Films from './components/Films/FilmsContainer';
-import Genres from './components/Genres/Genres';
+import Genres from 'Genres';
 import Film from './components/Film/Film';
 import history from './services/history';
 import { Provider } from 'react-redux';

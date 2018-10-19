@@ -10,7 +10,7 @@ router.post('/login', (req, res, next) => {
     User.findOne({ email: req.body.email })
       .then(user => {
         if (!user) {
-          res.json({ Error: "Wrong email or password" });
+          res.status(401).json({ Error: "Wrong email or password" });
           throw new Error("Wrong data");
         } 
         return user;
@@ -19,7 +19,7 @@ router.post('/login', (req, res, next) => {
         if(bcrypt.compareSync(req.body.password, user.password)) {
           return user;
         } else {
-          res.json({ Error: "Wrong email or password" });
+          res.status(401).json({ Error: "Wrong email or password" });
           throw new Error('Wrong data');
         }
       })

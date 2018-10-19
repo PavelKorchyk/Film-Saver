@@ -4,7 +4,6 @@ const makeRequest = (url, method, token, data ) => {
   let headers = new Headers();
   headers.set("Authorization", `JWT ${token}`);
   headers.set("Content-Type", "application/json");
-
   return fetch(url, {
     method: method,
     headers: headers,
